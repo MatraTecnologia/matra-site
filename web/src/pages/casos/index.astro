@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import ArticleCard from '../../components/content/ArticleCard.astro';
+import EmptyState from '../../components/content/EmptyState.astro';
+
+const casos = (await getCollection('casos'))
+	.filter((c) => !c.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Casos de sucesso', url: '/casos' },
+];
+---
+
+<BaseLayout
+	title="Casos de Sucesso"
+	description="Resultados reais de empresas que crescem com a Matra: mais vendas, mais leads e operações mais eficientes com marketing e tecnologia."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Resultados reais" crumbs={crumbs} width="xl">
+		<Fragment slot="title">
+			<span class="text-metal">Histórias de empresas</span>
+			<span class="text-roxo-light">que cresceram com a Matra</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Números que apareceram no caixa dos nossos clientes. Veja como marketing e tecnologia geram resultado de verdade.
+		</Fragment>
+	</PageHeader>
+
+	<section class="mx-auto max-w-6xl px-6 pb-24 sm:px-8">
+		{
+			casos.length > 0 ? (
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{casos.map((c) => (
+						<ArticleCard
+							href={`/casos/${c.id}/`}
+							title={c.data.title}
+							description={c.data.description}
+							pubDate={c.data.pubDate}
+							pillar={c.data.pillar}
+						/>
+					))}
+				</div>
+			) : (
+				<EmptyState message="Estamos organizando os casos de sucesso dos nossos clientes. Quer ser o próximo? Fale com a gente." />
+			)
+		}
+	</section>
+</BaseLayout>

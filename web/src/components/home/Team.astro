@@ -1,0 +1,42 @@
+---
+const team = [
+	{ name: 'Jeremias Oliveira', role: 'CEO' },
+	{ name: 'Natalia Zielinski', role: 'Diretora de Marketing' },
+	{ name: 'Bruno Zielinski', role: 'Desenvolvedor Full Stack' },
+	{ name: 'Kaisy C. Melo', role: 'Financeiro & Marketing' },
+	{ name: 'Ryan M. O. Varela', role: 'Comercial' },
+	{ name: 'Isabella', role: 'Comercial' },
+	{ name: 'Natan Oliveira', role: 'Social Media' },
+	{ name: 'Gabriel', role: 'Video Maker' },
+];
+
+const initials = (name: string) =>
+	name.split(' ').filter(Boolean).slice(0, 2).map((n) => n[0]).join('').toUpperCase();
+---
+
+<section class="border-t border-border/60 bg-surface/30">
+	<div class="mx-auto max-w-6xl px-4 py-20">
+		<div class="mx-auto max-w-2xl text-center" data-reveal>
+			<p class="text-sm font-medium uppercase tracking-[0.15em] text-roxo-light">Especialistas, não funcionários</p>
+			<h2 class="mt-3 text-3xl font-bold sm:text-4xl">O time que assume o seu crescimento</h2>
+			<p class="mt-4 text-muted">
+				Quando você contrata a Matra, estas 8 pessoas ficam comprometidas com o resultado
+				da sua empresa. Sem freelancer rotativo, sem terceirização.
+			</p>
+		</div>
+
+		<div class="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
+			{
+				team.map((m, i) => (
+					<div class="text-center" data-reveal style={`--reveal-delay:${i * 60}ms;`}>
+						<div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-roxo/30 bg-gradient-to-br from-roxo-deep to-roxo text-xl font-bold text-white shadow-[0_8px_30px_-8px_rgba(155,7,240,0.5)]">
+							{initials(m.name)}
+						</div>
+						<p class="mt-4 font-semibold text-text">{m.name}</p>
+						<p class="text-sm text-muted">{m.role}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

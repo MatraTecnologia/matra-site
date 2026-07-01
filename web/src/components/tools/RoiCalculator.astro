@@ -1,0 +1,96 @@
+---
+import Button from '../ui/Button.astro';
+import { whatsappLink } from '../../config/site';
+
+const fields = [
+	{ id: 'invest', label: 'Investimento mensal em anúncios', prefix: 'R$', value: 3000, min: 300, step: 100 },
+	{ id: 'ticket', label: 'Ticket médio por cliente', prefix: 'R$', value: 800, min: 10, step: 50 },
+	{ id: 'cpl', label: 'Custo médio por lead', prefix: 'R$', value: 20, min: 1, step: 1 },
+	{ id: 'close', label: 'Taxa de fechamento', suffix: '%', value: 20, min: 1, max: 100, step: 1 },
+];
+---
+
+<div class="roi-calc grid gap-8 rounded-3xl border border-border bg-surface/40 p-6 sm:p-10 lg:grid-cols-2">
+	<form class="space-y-5" novalidate>
+		{
+			fields.map((f) => (
+				<div>
+					<label for={`roi-${f.id}`} class="mb-1.5 block text-sm text-muted">{f.label}</label>
+					<div class="flex items-center gap-2 rounded-xl border border-border bg-surface-2 px-4 focus-within:border-roxo-light">
+						{f.prefix && <span class="text-sm text-muted">{f.prefix}</span>}
+						<input
+							id={`roi-${f.id}`}
+							data-roi={f.id}
+							type="number"
+							value={f.value}
+							min={f.min}
+							max={f.max}
+							step={f.step}
+							inputmode="numeric"
+							class="w-full bg-transparent py-3 text-text outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+						/>
+						{f.suffix && <span class="text-sm text-muted">{f.suffix}</span>}
+					</div>
+				</div>
+			))
+		}
+	</form>
+
+	<div class="flex flex-col justify-between rounded-2xl border border-roxo/30 bg-roxo/5 p-6">
+		<div>
+			<p class="text-sm text-muted">Seu potencial estimado por mês</p>
+			<p class="mt-1 text-4xl font-extrabold text-metal" data-roi-out="faturamento">R$ 0</p>
+
+			<dl class="mt-6 grid grid-cols-3 gap-3 text-center">
+				<div class="rounded-xl border border-border bg-surface-2 p-3">
+					<dt class="text-[10px] uppercase tracking-wide text-muted">Leads</dt>
+					<dd class="mt-1 text-lg font-bold text-text" data-roi-out="leads">0</dd>
+				</div>
+				<div class="rounded-xl border border-border bg-surface-2 p-3">
+					<dt class="text-[10px] uppercase tracking-wide text-muted">Clientes</dt>
+					<dd class="mt-1 text-lg font-bold text-text" data-roi-out="clientes">0</dd>
+				</div>
+				<div class="rounded-xl border border-border bg-surface-2 p-3">
+					<dt class="text-[10px] uppercase tracking-wide text-muted">Retorno</dt>
+					<dd class="mt-1 text-lg font-bold text-roxo-light" data-roi-out="roas">0×</dd>
+				</div>
+			</dl>
+		</div>
+
+		<div class="mt-6">
+			<Button href={whatsappLink('Olá! Simulei meu potencial de retorno no site e quero conversar com a Matra.')} class="w-full">
+				Quero atingir esse resultado
+			</Button>
+			<p class="mt-3 text-center text-xs text-muted">
+				Estimativa educativa. Resultados reais variam conforme segmento, oferta e execução.
+			</p>
+		</div>
+	</div>
+</div>
+
+<script is:inline>
+	const initRoi = () => {
+		document.querySelectorAll('.roi-calc').forEach((root) => {
+			if (root.dataset.init) return;
+			root.dataset.init = '1';
+			const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+			const num = (id) => Math.max(0, Number(root.querySelector(`[data-roi="${id}"]`)?.value) || 0);
+			const out = (k) => root.querySelector(`[data-roi-out="${k}"]`);
+			const calc = () => {
+				const invest = num('invest'), ticket = num('ticket'), cpl = num('cpl'), close = num('close');
+				const leads = cpl > 0 ? invest / cpl : 0;
+				const clientes = leads * (close / 100);
+				const faturamento = clientes * ticket;
+				const roas = invest > 0 ? faturamento / invest : 0;
+				out('faturamento').textContent = brl.format(faturamento);
+				out('leads').textContent = Math.round(leads).toLocaleString('pt-BR');
+				out('clientes').textContent = Math.round(clientes).toLocaleString('pt-BR');
+				out('roas').textContent = roas.toFixed(1).replace('.', ',') + '×';
+			};
+			root.querySelectorAll('[data-roi]').forEach((el) => el.addEventListener('input', calc));
+			calc();
+		});
+	};
+	initRoi();
+	document.addEventListener('astro:page-load', initRoi);
+</script>

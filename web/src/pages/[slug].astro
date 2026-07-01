@@ -1,0 +1,166 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import FaqAccordion from '../components/content/FaqAccordion.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import Button from '../components/ui/Button.astro';
+import { PILLARS, pillarBySlug } from '../config/pillars';
+import { PILLAR_CONTENT } from '../data/pillar-content';
+import { SEGMENTOS_CONTENT } from '../data/segmentos';
+import { CIDADES_CONTENT, ATENDIMENTO_CONTENT } from '../data/local-conteudo';
+import { CIDADES_BAIRROS } from '../data/local-seo';
+import { graph, serviceSchema } from '../lib/schema';
+import { whatsappLink, NAP } from '../config/site';
+
+export const getStaticPaths = () => [
+	...PILLARS.map((p) => ({ params: { slug: p.slug }, props: { kind: 'pilar', slug: p.slug } })),
+	...SEGMENTOS_CONTENT.map((s) => ({ params: { slug: `marketing-para-${s.slug}` }, props: { kind: 'segmento', slug: s.slug } })),
+	...ATENDIMENTO_CONTENT.map((a) => ({ params: { slug: a.slug }, props: { kind: 'atendimento', slug: a.slug } })),
+	...CIDADES_CONTENT.map((c) => ({ params: { slug: `marketing-em-${c.slug}` }, props: { kind: 'cidade', slug: c.slug } })),
+];
+
+const { kind, slug } = Astro.props;
+const url = `/${Astro.params.slug}`;
+
+// Normaliza cada tipo para uma view comum
+let eyebrow = '';
+let h1 = '';
+let lead = '';
+let faq: { q: string; a: string }[] = [];
+let ctaMsg = '';
+let city: string | undefined;
+let dores: string[] = [];
+let bullets: string[] = [];
+let bulletsTitle = 'Como a Matra ajuda';
+let contexto: string | undefined;
+let bairros: { nome: string; slug: string }[] = [];
+
+if (kind === 'pilar') {
+	const p = pillarBySlug(slug)!;
+	const c = PILLAR_CONTENT[slug];
+	eyebrow = p.name;
+	h1 = c.headline;
+	lead = c.intro;
+	bullets = c.bullets;
+	ctaMsg = `Olá! Tenho interesse em ${p.name} com a Matra.`;
+} else if (kind === 'segmento') {
+	const s = SEGMENTOS_CONTENT.find((x) => x.slug === slug)!;
+	eyebrow = `Marketing para ${s.nome}`;
+	h1 = s.titulo;
+	lead = s.intro;
+	dores = s.dores;
+	bullets = s.comoAjudamos;
+	faq = s.faq ?? [];
+	ctaMsg = `Olá! Tenho um negócio de ${s.nome} e quero crescer com a Matra.`;
+} else if (kind === 'atendimento') {
+	const a = ATENDIMENTO_CONTENT.find((x) => x.slug === slug)!;
+	eyebrow = 'Atendimento em Londrina';
+	h1 = a.titulo;
+	lead = a.intro;
+	bullets = a.bullets;
+	bulletsTitle = 'O que entregamos';
+	faq = a.faq ?? [];
+	city = 'Londrina';
+	ctaMsg = `Olá! Quero falar sobre ${a.nome}.`;
+} else {
+	const c = CIDADES_CONTENT.find((x) => x.slug === slug)!;
+	eyebrow = `Marketing e Tecnologia em ${c.nome}`;
+	h1 = c.titulo;
+	lead = c.intro;
+	contexto = c.contexto;
+	faq = c.faq ?? [];
+	city = c.nome;
+	ctaMsg = `Olá! Minha empresa é de ${c.nome} e quero um diagnóstico gratuito.`;
+	const cb = CIDADES_BAIRROS.find((x) => x.href === `/marketing-em-${slug}`);
+	if (cb) bairros = cb.bairros.map((b) => ({ nome: b.nome, slug: b.href.split('#')[1] }));
+}
+
+const crumbs = [{ name: 'Início', url: '/' }, { name: h1, url }];
+const metaDesc =
+	kind === 'pilar' ? PILLAR_CONTENT[slug].intro :
+	kind === 'segmento' ? SEGMENTOS_CONTENT.find((x) => x.slug === slug)!.descricao :
+	kind === 'atendimento' ? ATENDIMENTO_CONTENT.find((x) => x.slug === slug)!.descricao :
+	CIDADES_CONTENT.find((x) => x.slug === slug)!.descricao;
+---
+
+<BaseLayout title={h1} description={metaDesc} class="bg-glow">
+	<JsonLd schema={graph(serviceSchema({ name: h1, description: metaDesc, url, city }))} />
+
+	<PageHeader eyebrow={eyebrow} crumbs={crumbs}>
+		<Fragment slot="title">{h1}</Fragment>
+		<Fragment slot="lead">{lead}</Fragment>
+		<Button slot="actions" href={whatsappLink(ctaMsg)} size="lg">Solicitar diagnóstico gratuito</Button>
+	</PageHeader>
+
+	{contexto && (
+		<section class="mx-auto max-w-4xl px-6 pb-6 sm:px-8">
+			<p class="max-w-2xl text-muted">{contexto}</p>
+		</section>
+	)}
+
+	{dores.length > 0 && (
+		<section class="mx-auto max-w-4xl px-6 py-8 sm:px-8">
+			<h2 class="text-xl font-bold">Desafios de quem atua nesse mercado</h2>
+			<div class="mt-5 grid gap-3 sm:grid-cols-2">
+				{dores.map((d) => (
+					<div class="flex items-start gap-3 rounded-xl border border-border bg-surface/40 p-5">
+						<span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-500/15 text-red-400">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+						</span>
+						<span class="text-sm text-text">{d}</span>
+					</div>
+				))}
+			</div>
+		</section>
+	)}
+
+	{bullets.length > 0 && (
+		<section class="mx-auto max-w-4xl px-6 py-8 sm:px-8">
+			<h2 class="text-xl font-bold">{bulletsTitle}</h2>
+			<div class="mt-5 grid gap-3 sm:grid-cols-2">
+				{bullets.map((b) => (
+					<div class="flex items-start gap-3 rounded-xl border border-border bg-surface/40 p-5">
+						<span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-roxo/20 text-roxo-light">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+						</span>
+						<span class="text-sm text-text">{b}</span>
+					</div>
+				))}
+			</div>
+		</section>
+	)}
+
+	{bairros.length > 0 && (
+		<section class="mx-auto max-w-4xl px-6 py-8 sm:px-8">
+			<h2 class="text-xl font-bold">Bairros que atendemos em {city}</h2>
+			<div class="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
+				{bairros.map((b) => (
+					<div id={b.slug} class="scroll-mt-24 rounded-lg border border-border bg-surface/30 px-4 py-2.5 text-sm text-muted">
+						{b.nome}
+					</div>
+				))}
+			</div>
+		</section>
+	)}
+
+	{faq.length > 0 && (
+		<section class="mx-auto max-w-4xl px-6 py-12 sm:px-8">
+			<h2 class="mb-6 text-2xl font-bold">Perguntas frequentes</h2>
+			<FaqAccordion items={faq} />
+		</section>
+	)}
+
+	<section class="mx-auto max-w-4xl px-6 pb-24 pt-6 sm:px-8">
+		<div class="bg-glow rounded-3xl border border-border p-8 text-center sm:p-12">
+			<h2 class="text-2xl font-bold sm:text-3xl">
+				<span class="text-metal">Vamos crescer</span> <span class="text-roxo-light">a sua empresa?</span>
+			</h2>
+			<p class="mx-auto mt-4 max-w-lg text-muted">
+				Fale com um especialista da Matra e receba um diagnóstico gratuito. Atendemos {city ?? NAP.city} e todo o {NAP.regionName}.
+			</p>
+			<div class="mt-7 flex justify-center">
+				<Button href={whatsappLink(ctaMsg)} size="lg">Falar com um especialista</Button>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

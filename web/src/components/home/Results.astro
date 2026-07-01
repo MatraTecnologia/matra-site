@@ -1,0 +1,29 @@
+---
+const results = [
+	{ value: '+127%', label: 'de aumento em conversão', note: 'em campanhas otimizadas' },
+	{ value: '-34%', label: 'no custo por cliente (CAC)', note: 'em até 90 dias' },
+	{ value: '4,8×', label: 'de retorno sobre o investimento', note: 'ROAS médio em anúncios' },
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 py-20">
+	<div class="max-w-2xl" data-reveal>
+		<h2 class="text-3xl font-bold sm:text-4xl">Resultados que aparecem no caixa</h2>
+		<p class="mt-4 text-muted">
+			Não trabalhamos por vaidade. Cada ação é pensada para gerar mais vendas e lucro para a sua empresa.
+		</p>
+	</div>
+
+	<div class="mt-10 grid gap-4 sm:grid-cols-3">
+		{
+			results.map((r, i) => (
+				<div class="rounded-2xl border border-border bg-surface/40 p-8" data-reveal style={`--reveal-delay:${i * 90}ms;`}>
+					<p class="text-4xl font-extrabold text-roxo-light">{r.value}</p>
+					<p class="mt-3 font-medium text-text">{r.label}</p>
+					<p class="mt-1 text-sm text-muted">{r.note}</p>
+				</div>
+			))
+		}
+	</div>
+	<p class="mt-4 text-xs text-muted">Resultados médios de clientes Matra. Números variam conforme o segmento e o investimento.</p>
+</section>

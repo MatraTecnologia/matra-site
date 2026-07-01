@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Button from '../../components/ui/Button.astro';
+import { whatsappLink } from '../../config/site';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Ferramentas', url: '/ferramentas' },
+	{ name: 'Gerador de Briefing', url: '/ferramentas/gerador-de-briefing' },
+];
+
+const fields = [
+	{ id: 'empresa', label: 'Empresa', placeholder: 'Ex.: Padaria Pão de Ouro', type: 'input' },
+	{ id: 'produto', label: 'Produto ou serviço', placeholder: 'Ex.: Cestas de café da manhã sob encomenda', type: 'input' },
+	{ id: 'publico', label: 'Público-alvo', placeholder: 'Ex.: Adultos de 25 a 45 anos em Londrina que querem presentear', type: 'textarea' },
+	{ id: 'objetivo', label: 'Objetivo da campanha', placeholder: 'Ex.: Gerar pedidos pelo WhatsApp nas datas comemorativas', type: 'textarea' },
+	{ id: 'diferencial', label: 'Diferencial', placeholder: 'Ex.: Entrega no mesmo dia e produtos artesanais', type: 'textarea' },
+	{ id: 'orcamento', label: 'Orçamento', placeholder: 'Ex.: R$ 2.000 por mês', type: 'input' },
+];
+---
+
+<BaseLayout
+	title="Gerador de Briefing de Campanha Grátis | Matra"
+	description="Monte um briefing de marketing profissional em minutos. Preencha os campos e gere um texto organizado, pronto para copiar e enviar à sua agência ou equipe."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Ferramenta grátis" crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Gerador de</span>
+			<span class="text-roxo-light">Briefing</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Responda a algumas perguntas e gere um briefing de campanha organizado e profissional, pronto
+			para copiar e enviar à sua agência ou equipe de marketing.
+		</Fragment>
+	</PageHeader>
+
+	<div class="mx-auto max-w-4xl px-6 pb-4 sm:px-8" data-reveal>
+		<div class="brief-gen grid gap-8 rounded-3xl border border-border bg-surface/40 p-6 sm:p-10 lg:grid-cols-2">
+			<form class="space-y-5" novalidate>
+				{
+					fields.map((f) => (
+						<div>
+							<label for={`brief-${f.id}`} class="mb-1.5 block text-sm text-muted">{f.label}</label>
+							{f.type === 'textarea' ? (
+								<textarea
+									id={`brief-${f.id}`}
+									data-brief={f.id}
+									rows="2"
+									placeholder={f.placeholder}
+									class="w-full resize-y rounded-xl border border-border bg-surface-2 px-4 py-3 text-text outline-none placeholder:text-muted/60 focus:border-roxo-light"
+								/>
+							) : (
+								<input
+									id={`brief-${f.id}`}
+									data-brief={f.id}
+									type="text"
+									placeholder={f.placeholder}
+									class="w-full rounded-xl border border-border bg-surface-2 px-4 py-3 text-text outline-none placeholder:text-muted/60 focus:border-roxo-light"
+								/>
+							)}
+						</div>
+					))
+				}
+			</form>
+
+			<div class="flex flex-col rounded-2xl border border-roxo/30 bg-roxo/5 p-6">
+				<div class="flex items-center justify-between">
+					<p class="text-sm font-medium text-muted">Seu briefing</p>
+					<button
+						type="button"
+						data-brief-copy
+						class="rounded-full border border-border px-4 py-1.5 text-xs font-medium text-text transition-colors hover:border-roxo-light hover:text-roxo-light"
+					>
+						Copiar
+					</button>
+				</div>
+				<pre
+					data-brief-out
+					class="mt-3 flex-1 whitespace-pre-wrap rounded-xl border border-border bg-surface-2 p-4 font-sans text-sm text-muted"
+				>Preencha os campos ao lado para gerar seu briefing.</pre>
+			</div>
+		</div>
+	</div>
+
+	<section class="mx-auto max-w-4xl px-6 py-20 sm:px-8">
+		<div class="bg-glow rounded-3xl border border-border p-8 text-center sm:p-12">
+			<h2 class="text-2xl font-bold sm:text-3xl">Briefing pronto? Vamos tirar do papel.</h2>
+			<p class="mx-auto mt-4 max-w-lg text-muted">
+				Envie seu briefing para a Matra e receba uma proposta de campanha sob medida para o seu
+				objetivo.
+			</p>
+			<div class="mt-7 flex justify-center">
+				<Button href={whatsappLink('Olá! Montei um briefing no site e quero uma proposta de campanha com a Matra.')} size="lg">
+					Enviar meu briefing
+				</Button>
+			</div>
+		</div>
+	</section>
+
+	<script is:inline>
+		const initBrief = () => {
+			document.querySelectorAll('.brief-gen').forEach((root) => {
+				if (root.dataset.init) return;
+				root.dataset.init = '1';
+				const val = (id) => (root.querySelector(`[data-brief="${id}"]`)?.value || '').trim();
+				const out = root.querySelector('[data-brief-out]');
+				const copyBtn = root.querySelector('[data-brief-copy]');
+				const empty = 'Preencha os campos ao lado para gerar seu briefing.';
+				let copyTimer;
+				const build = () => {
+					const rows = [
+						['Empresa', val('empresa')],
+						['Produto/Serviço', val('produto')],
+						['Público-alvo', val('publico')],
+						['Objetivo da campanha', val('objetivo')],
+						['Diferencial', val('diferencial')],
+						['Orçamento', val('orcamento')],
+					].filter(([, v]) => v);
+					if (!rows.length) return empty;
+					const lines = ['BRIEFING DE CAMPANHA', ''];
+					rows.forEach(([label, v]) => lines.push(`${label}: ${v}`));
+					lines.push('', 'Gerado em matratecnologia.com');
+					return lines.join('\n');
+				};
+				const render = () => {
+					out.textContent = build();
+				};
+				root.querySelectorAll('[data-brief]').forEach((el) => el.addEventListener('input', render));
+				copyBtn.addEventListener('click', async () => {
+					const text = build();
+					if (text === empty) return;
+					try {
+						await navigator.clipboard.writeText(text);
+						copyBtn.textContent = 'Copiado!';
+						clearTimeout(copyTimer);
+						copyTimer = setTimeout(() => (copyBtn.textContent = 'Copiar'), 2000);
+					} catch {
+						/* clipboard indisponível */
+					}
+				});
+				render();
+			});
+		};
+		initBrief();
+		document.addEventListener('astro:page-load', initBrief);
+	</script>
+</BaseLayout>

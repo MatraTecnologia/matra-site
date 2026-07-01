@@ -1,0 +1,32 @@
+---
+import JsonLd from '../seo/JsonLd.astro';
+import { faqSchema } from '../../lib/schema';
+
+interface Props {
+	items: { q: string; a: string }[];
+	withSchema?: boolean;
+}
+const { items, withSchema = true } = Astro.props;
+---
+
+<div class="divide-y divide-border/60 rounded-2xl border border-border bg-surface/40">
+	{
+		items.map((item) => (
+			<details class="group px-6">
+				<summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-medium text-text">
+					{item.q}
+					<svg
+						class="shrink-0 text-muted transition-transform group-open:rotate-45"
+						width="20" height="20" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2" aria-hidden="true"
+					>
+						<path d="M12 5v14M5 12h14" />
+					</svg>
+				</summary>
+				<p class="pb-5 text-muted">{item.a}</p>
+			</details>
+		))
+	}
+</div>
+
+{withSchema && <JsonLd schema={{ '@context': 'https://schema.org', ...faqSchema(items) }} />}

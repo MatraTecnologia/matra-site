@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Button from '../components/ui/Button.astro';
+import { whatsappLink, CONTACT, NAP } from '../config/site';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Contato', url: '/contato' },
+];
+
+const cards = [
+	{ label: 'WhatsApp', value: CONTACT.whatsappLabel, note: 'Fale agora com um especialista', href: whatsappLink('Olá! Vim pelo site da Matra e quero conversar.') },
+	{ label: 'E-mail', value: CONTACT.email, note: 'Para propostas e parcerias', href: `mailto:${CONTACT.email}` },
+	{ label: 'Instagram', value: '@matra.marketing', note: 'Acompanhe bastidores e resultados', href: CONTACT.instagram },
+	{ label: 'Localização', value: `${NAP.city} — ${NAP.region}`, note: `Atendemos todo o ${NAP.regionName}`, href: NAP.mapUrl },
+];
+---
+
+<BaseLayout
+	title="Contato"
+	description="Fale com a Matra pelo WhatsApp ou e-mail e solicite seu diagnóstico estratégico gratuito. Atendemos Londrina e todo o Paraná."
+	class="bg-glow"
+>
+	<PageHeader crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Vamos conversar sobre</span>
+			<span class="text-roxo-light">o crescimento da sua empresa</span>
+		</Fragment>
+		<Fragment slot="lead">Resposta em até 24h úteis. Diagnóstico gratuito, sem compromisso.</Fragment>
+	</PageHeader>
+
+	<section class="mx-auto max-w-4xl px-6 pb-24 sm:px-8">
+		<div class="grid gap-4 sm:grid-cols-2">
+			{
+				cards.map((c) => (
+					<a href={c.href} class="group rounded-2xl border border-border bg-surface/40 p-6 transition-colors hover:border-roxo-light">
+						<p class="text-sm text-muted">{c.label}</p>
+						<p class="mt-1 text-xl font-semibold text-text group-hover:text-roxo-light">{c.value}</p>
+						<p class="mt-2 text-sm text-muted">{c.note}</p>
+					</a>
+				))
+			}
+		</div>
+
+		<div class="mt-10">
+			<Button href={whatsappLink('Olá! Quero meu diagnóstico estratégico gratuito.')} size="lg">
+				Solicitar diagnóstico gratuito
+			</Button>
+		</div>
+	</section>
+</BaseLayout>

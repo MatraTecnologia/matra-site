@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Button from '../../components/ui/Button.astro';
+import RoiCalculator from '../../components/tools/RoiCalculator.astro';
+import { whatsappLink } from '../../config/site';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Ferramentas', url: '/ferramentas' },
+	{ name: 'Simulador de ROI', url: '/ferramentas/simulador-de-roi' },
+];
+---
+
+<BaseLayout
+	title="Simulador de ROI de Marketing Grátis | Matra"
+	description="Descubra o retorno potencial do seu investimento em marketing. Simule leads, clientes e faturamento a partir do seu orçamento em segundos, sem cadastro."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Ferramenta grátis" crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Simulador de</span>
+			<span class="text-roxo-light">Retorno (ROI)</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Informe seu investimento, ticket médio e taxas de conversão para estimar quantos clientes e
+			quanto faturamento o marketing pode gerar para a sua empresa.
+		</Fragment>
+	</PageHeader>
+
+	<div class="mx-auto max-w-4xl px-6 pb-4 sm:px-8" data-reveal>
+		<RoiCalculator />
+	</div>
+
+	<section class="mx-auto max-w-4xl px-6 py-20 sm:px-8">
+		<div class="bg-glow rounded-3xl border border-border p-8 text-center sm:p-12">
+			<h2 class="text-2xl font-bold sm:text-3xl">Pronto para sair da estimativa e ir ao resultado?</h2>
+			<p class="mx-auto mt-4 max-w-lg text-muted">
+				A Matra desenha a estratégia certa para transformar esse potencial em vendas reais.
+			</p>
+			<div class="mt-7 flex justify-center">
+				<Button href={whatsappLink('Olá! Simulei meu ROI no site e quero conversar com a Matra sobre marketing.')} size="lg">
+					Falar com um especialista
+				</Button>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

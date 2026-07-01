@@ -1,0 +1,40 @@
+---
+const rows = [
+	{ no: 'Apenas rodar tráfego e torcer', yes: 'Tráfego + tecnologia própria para escalar com previsibilidade' },
+	{ no: 'Só entregar um sistema e sumir', yes: 'Plataformas próprias e evolução contínua do seu negócio' },
+	{ no: 'Apenas postar no Instagram', yes: 'Marketing estratégico focado em vendas, não em curtidas' },
+	{ no: 'Mais uma agência que desaparece', yes: 'Um parceiro presente, com acesso direto ao time' },
+];
+---
+
+<section class="mx-auto max-w-5xl px-4 py-20">
+	<div class="mx-auto max-w-2xl text-center" data-reveal>
+		<h2 class="text-3xl font-bold sm:text-4xl">Você não quer só mais um fornecedor</h2>
+		<p class="mt-4 text-muted">Empresas que crescem procuram um parceiro de resultado. É isso que entregamos.</p>
+	</div>
+
+	<div class="mt-10 space-y-3">
+		{
+			rows.map((r, i) => (
+				<div
+					class="grid items-stretch gap-3 sm:grid-cols-2"
+					data-reveal
+					style={`--reveal-delay:${i * 80}ms;`}
+				>
+					<div class="flex items-center gap-3 rounded-xl border border-border bg-surface/30 p-5">
+						<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-500/15 text-red-400">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+						</span>
+						<span class="text-sm text-muted line-through decoration-red-400/40">{r.no}</span>
+					</div>
+					<div class="flex items-center gap-3 rounded-xl border border-roxo/40 bg-roxo/10 p-5">
+						<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-roxo/25 text-roxo-light">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+						</span>
+						<span class="text-sm font-medium text-text">{r.yes}</span>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>

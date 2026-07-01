@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import ArticleCard from '../../components/content/ArticleCard.astro';
+import EmptyState from '../../components/content/EmptyState.astro';
+
+const posts = (await getCollection('blog'))
+	.filter((p) => !p.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Blog', url: '/blog' },
+];
+---
+
+<BaseLayout
+	title="Blog da Matra — Marketing e Tecnologia"
+	description="Conteúdos, estratégias e insights de marketing digital, tráfego pago, SEO e tecnologia para fazer sua empresa crescer."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Conteúdo" crumbs={crumbs} width="xl">
+		<Fragment slot="title">
+			<span class="text-metal">Estratégias para fazer</span>
+			<span class="text-roxo-light">sua empresa crescer</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Marketing, tráfego pago, SEO e tecnologia explicados de forma prática — para você aplicar e vender mais.
+		</Fragment>
+	</PageHeader>
+
+	<section class="mx-auto max-w-6xl px-6 pb-24 sm:px-8">
+		{
+			posts.length > 0 ? (
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{posts.map((post) => (
+						<ArticleCard
+							href={`/blog/${post.id}/`}
+							title={post.data.title}
+							description={post.data.description}
+							pubDate={post.data.pubDate}
+							pillar={post.data.pillar}
+						/>
+					))}
+				</div>
+			) : (
+				<EmptyState />
+			)
+		}
+	</section>
+</BaseLayout>

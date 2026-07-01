@@ -1,0 +1,29 @@
+---
+import Breadcrumbs from '../seo/Breadcrumbs.astro';
+
+interface Props {
+	eyebrow?: string;
+	crumbs?: { name: string; url: string }[];
+	width?: 'md' | 'lg' | 'xl';
+}
+const { eyebrow, crumbs, width = 'lg' } = Astro.props;
+const max = { md: 'max-w-3xl', lg: 'max-w-4xl', xl: 'max-w-6xl' }[width];
+---
+
+<header class={`mx-auto ${max} px-6 pb-12 pt-14 sm:px-8 sm:pt-24`}>
+	{crumbs && (
+		<div class="mb-10">
+			<Breadcrumbs items={crumbs} />
+		</div>
+	)}
+	{eyebrow && (
+		<p class="mb-4 text-sm font-medium uppercase tracking-[0.15em] text-roxo-light">{eyebrow}</p>
+	)}
+	<h1 class="max-w-3xl text-4xl font-extrabold leading-[1.08] sm:text-5xl">
+		<slot name="title" />
+	</h1>
+	{Astro.slots.has('lead') && (
+		<p class="mt-6 max-w-2xl text-lg text-muted"><slot name="lead" /></p>
+	)}
+	{Astro.slots.has('actions') && <div class="mt-8"><slot name="actions" /></div>}
+</header>

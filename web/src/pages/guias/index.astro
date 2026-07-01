@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import ArticleCard from '../../components/content/ArticleCard.astro';
+import EmptyState from '../../components/content/EmptyState.astro';
+
+const guias = (await getCollection('guias'))
+	.filter((g) => !g.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Guias', url: '/guias' },
+];
+---
+
+<BaseLayout
+	title="Guias de Marketing e Tecnologia"
+	description="Guias completos e práticos sobre marketing digital, tráfego pago, SEO, desenvolvimento e tecnologia para aplicar no seu negócio."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Conteúdo" crumbs={crumbs} width="xl">
+		<Fragment slot="title">
+			<span class="text-metal">Guias completos</span>
+			<span class="text-roxo-light">para dominar cada tema</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Materiais de referência, do básico ao avançado, para você entender e aplicar as estratégias que fazem empresas crescerem.
+		</Fragment>
+	</PageHeader>
+
+	<section class="mx-auto max-w-6xl px-6 pb-24 sm:px-8">
+		{
+			guias.length > 0 ? (
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{guias.map((g) => (
+						<ArticleCard
+							href={`/guias/${g.id}/`}
+							title={g.data.title}
+							description={g.data.description}
+							pubDate={g.data.pubDate}
+							pillar={g.data.pillar}
+						/>
+					))}
+				</div>
+			) : (
+				<EmptyState message="Nossos primeiros guias estão a caminho. Enquanto isso, fale com um especialista e tire suas dúvidas na prática." />
+			)
+		}
+	</section>
+</BaseLayout>

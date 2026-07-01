@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Button from '../../components/ui/Button.astro';
+import { whatsappLink } from '../../config/site';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Ferramentas', url: '/ferramentas' },
+	{ name: 'Calculadora de Tráfego Pago', url: '/ferramentas/calculadora-de-trafego-pago' },
+];
+
+const fields = [
+	{ id: 'invest', label: 'Investimento mensal em anúncios', prefix: 'R$', value: 3000, min: 100, step: 100 },
+	{ id: 'cpc', label: 'Custo por clique (CPC)', prefix: 'R$', value: 2, min: 0.1, step: 0.1 },
+	{ id: 'conv', label: 'Taxa de conversão da landing', suffix: '%', value: 5, min: 0.1, max: 100, step: 0.1 },
+	{ id: 'closing', label: 'Taxa de fechamento das vendas', suffix: '%', value: 25, min: 1, max: 100, step: 1 },
+	{ id: 'ticket', label: 'Ticket médio por venda', prefix: 'R$', value: 800, min: 10, step: 50 },
+];
+---
+
+<BaseLayout
+	title="Calculadora de Tráfego Pago Grátis | Matra"
+	description="Simule quantos cliques, leads e vendas seu investimento em tráfego pago pode gerar. Calcule faturamento e ROI da campanha em tempo real, sem cadastro."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Ferramenta grátis" crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Calculadora de</span>
+			<span class="text-roxo-light">Tráfego Pago</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Ajuste os números da sua operação e veja, em tempo real, o potencial de cliques, leads,
+			vendas, faturamento e retorno do seu investimento em anúncios.
+		</Fragment>
+	</PageHeader>
+
+	<div class="mx-auto max-w-4xl px-6 pb-4 sm:px-8" data-reveal>
+		<div class="trafego-calc grid gap-8 rounded-3xl border border-border bg-surface/40 p-6 sm:p-10 lg:grid-cols-2">
+			<form class="space-y-5" novalidate>
+				{
+					fields.map((f) => (
+						<div>
+							<label for={`traf-${f.id}`} class="mb-1.5 block text-sm text-muted">{f.label}</label>
+							<div class="flex items-center gap-2 rounded-xl border border-border bg-surface-2 px-4 focus-within:border-roxo-light">
+								{f.prefix && <span class="text-sm text-muted">{f.prefix}</span>}
+								<input
+									id={`traf-${f.id}`}
+									data-traf={f.id}
+									type="number"
+									value={f.value}
+									min={f.min}
+									max={f.max}
+									step={f.step}
+									inputmode="decimal"
+									class="w-full bg-transparent py-3 text-text outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+								/>
+								{f.suffix && <span class="text-sm text-muted">{f.suffix}</span>}
+							</div>
+						</div>
+					))
+				}
+			</form>
+
+			<div class="flex flex-col justify-between rounded-2xl border border-roxo/30 bg-roxo/5 p-6">
+				<div>
+					<p class="text-sm text-muted">Faturamento estimado por mês</p>
+					<p class="mt-1 text-4xl font-extrabold text-metal" data-traf-out="faturamento">R$ 0</p>
+
+					<dl class="mt-6 grid grid-cols-2 gap-3 text-center">
+						<div class="rounded-xl border border-border bg-surface-2 p-3">
+							<dt class="text-[10px] uppercase tracking-wide text-muted">Cliques</dt>
+							<dd class="mt-1 text-lg font-bold text-text" data-traf-out="cliques">0</dd>
+						</div>
+						<div class="rounded-xl border border-border bg-surface-2 p-3">
+							<dt class="text-[10px] uppercase tracking-wide text-muted">Leads</dt>
+							<dd class="mt-1 text-lg font-bold text-text" data-traf-out="leads">0</dd>
+						</div>
+						<div class="rounded-xl border border-border bg-surface-2 p-3">
+							<dt class="text-[10px] uppercase tracking-wide text-muted">Vendas</dt>
+							<dd class="mt-1 text-lg font-bold text-text" data-traf-out="vendas">0</dd>
+						</div>
+						<div class="rounded-xl border border-border bg-surface-2 p-3">
+							<dt class="text-[10px] uppercase tracking-wide text-muted">Retorno</dt>
+							<dd class="mt-1 text-lg font-bold text-roxo-light" data-traf-out="roas">0×</dd>
+						</div>
+					</dl>
+
+					<p class="mt-4 text-center text-sm text-muted">
+						Custo por lead estimado:
+						<span class="font-semibold text-text" data-traf-out="cpl">R$ 0</span>
+					</p>
+				</div>
+
+				<div class="mt-6">
+					<Button href={whatsappLink('Olá! Simulei minha campanha de tráfego pago no site e quero um plano para atingir esse resultado com a Matra.')} class="w-full">
+						Quero uma campanha assim
+					</Button>
+					<p class="mt-3 text-center text-xs text-muted">
+						Estimativa educativa. Resultados reais variam conforme segmento, oferta e execução.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<section class="mx-auto max-w-4xl px-6 py-20 sm:px-8">
+		<div class="bg-glow rounded-3xl border border-border p-8 text-center sm:p-12">
+			<h2 class="text-2xl font-bold sm:text-3xl">Vamos transformar esses números em vendas?</h2>
+			<p class="mx-auto mt-4 max-w-lg text-muted">
+				A Matra estrutura campanhas de tráfego pago com foco em retorno, do anúncio à conversão.
+			</p>
+			<div class="mt-7 flex justify-center">
+				<Button href={whatsappLink('Olá! Quero conversar com a Matra sobre tráfego pago para a minha empresa.')} size="lg">
+					Falar com um especialista
+				</Button>
+			</div>
+		</div>
+	</section>
+
+	<script is:inline>
+		const initTrafego = () => {
+			document.querySelectorAll('.trafego-calc').forEach((root) => {
+				if (root.dataset.init) return;
+				root.dataset.init = '1';
+				const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+				const num = (id) => Math.max(0, Number(root.querySelector(`[data-traf="${id}"]`)?.value) || 0);
+				const out = (k) => root.querySelector(`[data-traf-out="${k}"]`);
+				const calc = () => {
+					const invest = num('invest'), cpc = num('cpc'), conv = num('conv'), closing = num('closing'), ticket = num('ticket');
+					const cliques = cpc > 0 ? invest / cpc : 0;
+					const leads = cliques * (conv / 100);
+					const vendas = leads * (closing / 100);
+					const faturamento = vendas * ticket;
+					const roas = invest > 0 ? faturamento / invest : 0;
+					const cpl = leads > 0 ? invest / leads : 0;
+					out('faturamento').textContent = brl.format(faturamento);
+					out('cliques').textContent = Math.round(cliques).toLocaleString('pt-BR');
+					out('leads').textContent = Math.round(leads).toLocaleString('pt-BR');
+					out('vendas').textContent = Math.round(vendas).toLocaleString('pt-BR');
+					out('roas').textContent = roas.toFixed(1).replace('.', ',') + '×';
+					out('cpl').textContent = brl.format(cpl);
+				};
+				root.querySelectorAll('[data-traf]').forEach((el) => el.addEventListener('input', calc));
+				calc();
+			});
+		};
+		initTrafego();
+		document.addEventListener('astro:page-load', initTrafego);
+	</script>
+</BaseLayout>

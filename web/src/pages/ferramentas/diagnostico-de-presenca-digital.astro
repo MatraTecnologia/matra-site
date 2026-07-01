@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Button from '../../components/ui/Button.astro';
+import { whatsappLink } from '../../config/site';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Ferramentas', url: '/ferramentas' },
+	{ name: 'Diagnóstico de Presença Digital', url: '/ferramentas/diagnostico-de-presenca-digital' },
+];
+
+const questions = [
+	{ id: 'site', text: 'Sua empresa tem um site próprio, rápido e adaptado para celular?' },
+	{ id: 'google', text: 'Ao buscar seu nome no Google, sua empresa aparece com destaque?' },
+	{ id: 'gmn', text: 'Você tem um perfil no Google Meu Negócio otimizado e ativo?' },
+	{ id: 'ads', text: 'Você investe em anúncios pagos (Google, Meta ou similares) de forma constante?' },
+	{ id: 'social', text: 'Suas redes sociais são atualizadas com frequência e estratégia?' },
+	{ id: 'leads', text: 'Você responde novos contatos e leads em poucos minutos?' },
+	{ id: 'metricas', text: 'Você acompanha métricas (custo por lead, conversão, retorno) das suas ações?' },
+	{ id: 'conteudo', text: 'Você produz conteúdo (blog, vídeos, posts) que atrai clientes ao longo do tempo?' },
+];
+---
+
+<BaseLayout
+	title="Diagnóstico de Presença Digital Grátis | Matra"
+	description="Responda 8 perguntas rápidas e descubra a maturidade digital da sua empresa. Receba um diagnóstico com pontos fortes e o que priorizar para crescer online."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Ferramenta grátis" crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Diagnóstico de</span>
+			<span class="text-roxo-light">Presença Digital</span>
+		</Fragment>
+		<Fragment slot="lead">
+			8 perguntas de sim ou não para medir o quanto sua empresa está preparada para vender pela
+			internet. Ao final, você recebe um diagnóstico e o próximo passo recomendado.
+		</Fragment>
+	</PageHeader>
+
+	<div class="mx-auto max-w-4xl px-6 pb-4 sm:px-8" data-reveal>
+		<div class="diag-quiz rounded-3xl border border-border bg-surface/40 p-6 sm:p-10">
+			<div class="mb-8 rounded-2xl border border-roxo/30 bg-roxo/5 p-6">
+				<div class="flex items-end justify-between">
+					<div>
+						<p class="text-sm text-muted">Sua nota de presença digital</p>
+						<p class="mt-1 text-4xl font-extrabold text-metal">
+							<span data-diag-score>0</span>/{questions.length}
+						</p>
+					</div>
+					<p class="text-lg font-bold text-roxo-light" data-diag-level>—</p>
+				</div>
+				<div class="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-surface-2">
+					<div class="h-full rounded-full bg-roxo transition-all duration-300" style="width:0%" data-diag-bar></div>
+				</div>
+				<p class="mt-3 text-sm text-muted" data-diag-verdict>Responda às perguntas abaixo para ver seu diagnóstico.</p>
+			</div>
+
+			<ul class="space-y-3">
+				{
+					questions.map((q, i) => (
+						<li class="rounded-2xl border border-border bg-surface-2 p-4">
+							<p class="font-medium text-text">
+								<span class="text-roxo-light">{i + 1}.</span> {q.text}
+							</p>
+							<div class="mt-3 flex gap-2">
+								<button
+									type="button"
+									data-diag-answer={q.id}
+									data-value="1"
+									class="flex-1 rounded-xl border border-border px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-roxo-light data-[on=true]:border-roxo data-[on=true]:bg-roxo/15 data-[on=true]:text-roxo-light"
+								>
+									Sim
+								</button>
+								<button
+									type="button"
+									data-diag-answer={q.id}
+									data-value="0"
+									class="flex-1 rounded-xl border border-border px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-roxo-light data-[on=true]:border-roxo data-[on=true]:bg-roxo/15 data-[on=true]:text-roxo-light"
+								>
+									Não
+								</button>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+
+			<div class="mt-8 hidden rounded-2xl border border-roxo/30 bg-roxo/5 p-6 text-center" data-diag-cta>
+				<p class="text-lg font-semibold text-text" data-diag-cta-title></p>
+				<p class="mx-auto mt-2 max-w-md text-sm text-muted" data-diag-cta-text></p>
+				<div class="mt-5 flex justify-center">
+					<Button href={whatsappLink('Olá! Fiz o diagnóstico de presença digital no site e quero conversar com a Matra sobre os próximos passos.')} size="lg">
+						Falar com um especialista
+					</Button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script is:inline>
+		const initDiag = () => {
+			document.querySelectorAll('.diag-quiz').forEach((root) => {
+				if (root.dataset.init) return;
+				root.dataset.init = '1';
+				const ids = [...new Set([...root.querySelectorAll('[data-diag-answer]')].map((b) => b.dataset.diagAnswer))];
+				const total = ids.length;
+				const answers = {};
+				const scoreEl = root.querySelector('[data-diag-score]');
+				const levelEl = root.querySelector('[data-diag-level]');
+				const barEl = root.querySelector('[data-diag-bar]');
+				const verdictEl = root.querySelector('[data-diag-verdict]');
+				const ctaEl = root.querySelector('[data-diag-cta]');
+				const ctaTitle = root.querySelector('[data-diag-cta-title]');
+				const ctaText = root.querySelector('[data-diag-cta-text]');
+				const bands = {
+					fraco: {
+						level: 'Fraco',
+						verdict: 'Sua empresa está deixando muitas oportunidades passarem. Há uma base digital inteira a construir.',
+						ctaTitle: 'Hora de colocar sua empresa no mapa digital',
+						ctaText: 'Você tem muito a ganhar. Vamos estruturar sua presença online do zero, com prioridade no que traz retorno mais rápido.',
+					},
+					medio: {
+						level: 'Médio',
+						verdict: 'Você já tem uma base, mas há lacunas importantes que limitam seu crescimento online.',
+						ctaTitle: 'Você está no caminho, mas dá para ir muito além',
+						ctaText: 'Com alguns ajustes estratégicos, sua presença digital pode gerar bem mais leads e vendas.',
+					},
+					bom: {
+						level: 'Bom',
+						verdict: 'Parabéns! Sua presença digital é sólida. Agora o foco é escalar e otimizar o retorno.',
+						ctaTitle: 'Vamos escalar seus resultados?',
+						ctaText: 'Sua base é forte. A Matra ajuda a extrair o máximo dela, com estratégia orientada a dados.',
+					},
+				};
+				const bandFor = (score) => {
+					const pct = score / total;
+					if (pct < 0.4) return bands.fraco;
+					if (pct < 0.75) return bands.medio;
+					return bands.bom;
+				};
+				const update = () => {
+					const answered = Object.keys(answers).length;
+					const score = Object.values(answers).reduce((a, b) => a + b, 0);
+					scoreEl.textContent = score;
+					barEl.style.width = Math.round((score / total) * 100) + '%';
+					if (answered < total) {
+						levelEl.textContent = '—';
+						verdictEl.textContent = `Faltam ${total - answered} pergunta(s) para o diagnóstico completo.`;
+						ctaEl.classList.add('hidden');
+						return;
+					}
+					const band = bandFor(score);
+					levelEl.textContent = band.level;
+					verdictEl.textContent = band.verdict;
+					ctaTitle.textContent = band.ctaTitle;
+					ctaText.textContent = band.ctaText;
+					ctaEl.classList.remove('hidden');
+				};
+				root.querySelectorAll('[data-diag-answer]').forEach((btn) => {
+					btn.addEventListener('click', () => {
+						const id = btn.dataset.diagAnswer;
+						answers[id] = Number(btn.dataset.value);
+						root.querySelectorAll(`[data-diag-answer="${id}"]`).forEach((b) => (b.dataset.on = 'false'));
+						btn.dataset.on = 'true';
+						update();
+					});
+				});
+				update();
+			});
+		};
+		initDiag();
+		document.addEventListener('astro:page-load', initDiag);
+	</script>
+</BaseLayout>

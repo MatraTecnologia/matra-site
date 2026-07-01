@@ -1,0 +1,72 @@
+---
+const solutions = [
+	{
+		title: 'Tráfego Pago',
+		desc: 'Campanhas no Google e Meta que trazem clientes qualificados — não apenas curtidas.',
+		href: '/trafego-pago',
+	},
+	{
+		title: 'Sites e Landing Pages',
+		desc: 'Sites rápidos e otimizados que transformam visitantes em oportunidades de venda.',
+		href: '/desenvolvimento-de-sites',
+	},
+	{
+		title: 'SEO e Conteúdo',
+		desc: 'Apareça no Google — e no ChatGPT — quando seu cliente procura pelo que você faz.',
+		href: '/seo',
+	},
+	{
+		title: 'Sistemas e Automação',
+		desc: 'Tecnologia sob medida que elimina trabalho manual e escala sua operação.',
+		href: '/desenvolvimento-de-sistemas',
+	},
+	{
+		title: 'Redes Sociais e Branding',
+		desc: 'Uma marca forte e presente que gera autoridade e confiança no seu mercado.',
+		href: '/redes-sociais',
+	},
+	{
+		title: 'CRM e Vendas',
+		desc: 'Organize seu funil, acompanhe cada lead e feche mais negócios com previsibilidade.',
+		href: '/crm',
+	},
+	{
+		title: 'Produção de Vídeo',
+		desc: 'Do roteiro à edição: vídeos que prendem a atenção e vendem a sua marca.',
+		href: '/redes-sociais',
+	},
+	{
+		title: 'Automação e IA',
+		desc: 'Inteligência artificial e automações que economizam horas do seu time todo mês.',
+		href: '/automacao',
+	},
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 py-20">
+	<div class="max-w-2xl" data-reveal>
+		<h2 class="text-3xl font-bold sm:text-4xl">Tudo que sua empresa precisa para crescer, em um só lugar</h2>
+		<p class="mt-4 text-muted">
+			Marketing e tecnologia trabalhando juntos, com um time fixo de especialistas cuidando da sua operação.
+		</p>
+	</div>
+
+	<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		{
+			solutions.map((s, i) => (
+				<a
+					href={s.href}
+					class="group flex flex-col rounded-2xl border border-border bg-surface/40 p-6 transition-all hover:border-roxo-light hover:bg-surface"
+					data-reveal
+					style={`--reveal-delay:${i * 70}ms;`}
+				>
+					<h3 class="text-lg font-semibold text-text group-hover:text-roxo-light">{s.title}</h3>
+					<p class="mt-2 text-sm text-muted">{s.desc}</p>
+					<span class="mt-4 inline-flex items-center gap-1 text-sm text-roxo-light opacity-0 transition-opacity group-hover:opacity-100">
+						Saiba mais →
+					</span>
+				</a>
+			))
+		}
+	</div>
+</section>

@@ -1,0 +1,38 @@
+---
+import Button from '../ui/Button.astro';
+import { whatsappLink } from '../../config/site';
+
+const items = [
+	'Análise do seu momento atual e das maiores oportunidades de crescimento',
+	'Diagnóstico dos seus canais de aquisição (o que está travando suas vendas)',
+	'Recomendações práticas de marketing e tecnologia para o seu caso',
+	'Um plano inicial claro — sem jargão e sem compromisso de fechar',
+];
+---
+
+<section class="mx-auto max-w-4xl px-4 py-20">
+	<div class="rounded-3xl border border-roxo/30 bg-roxo/5 p-8 sm:p-12" data-reveal>
+		<p class="text-sm font-medium uppercase tracking-[0.15em] text-roxo-light">Diagnóstico estratégico gratuito</p>
+		<h2 class="mt-3 text-3xl font-bold sm:text-4xl">Em 30 minutos, você sai com um plano — não com uma proposta genérica</h2>
+
+		<ul class="mt-8 grid gap-4 sm:grid-cols-2">
+			{
+				items.map((it) => (
+					<li class="flex items-start gap-3">
+						<span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-roxo/25 text-roxo-light">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+						</span>
+						<span class="text-sm text-text">{it}</span>
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+			<Button href={whatsappLink('Olá! Quero agendar meu diagnóstico estratégico gratuito com a Matra.')} size="lg">
+				Agendar meu diagnóstico gratuito
+			</Button>
+			<span class="text-sm text-muted">Grátis · 30 min · Sem compromisso · Resposta em até 24h</span>
+		</div>
+	</div>
+</section>

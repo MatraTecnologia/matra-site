@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Button from '../components/ui/Button.astro';
+import { PILLARS } from '../config/pillars';
+import { PILLAR_CONTENT } from '../data/pillar-content';
+import { whatsappLink } from '../config/site';
+
+const groups = ['Marketing', 'Tecnologia', 'Negócios'] as const;
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Serviços', url: '/servicos' },
+];
+---
+
+<BaseLayout
+	title="Serviços de Marketing e Tecnologia"
+	description="Tráfego pago, SEO, criação de sites, sistemas, automação, IA e mais. Tudo que sua empresa precisa para crescer, sob o mesmo teto."
+	class="bg-glow"
+>
+	<PageHeader crumbs={crumbs} width="xl">
+		<Fragment slot="title">
+			<span class="text-metal">Tudo que sua empresa precisa</span>
+			<span class="text-roxo-light">para crescer, sob o mesmo teto</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Marketing e tecnologia integrados, com time próprio de especialistas e plataformas
+			desenvolvidas internamente.
+		</Fragment>
+	</PageHeader>
+
+	<div class="mx-auto max-w-6xl space-y-14 px-6 pb-4 sm:px-8">
+		{
+			groups.map((g) => (
+				<section>
+					<h2 class="text-sm font-medium uppercase tracking-[0.15em] text-roxo-light">{g}</h2>
+					<div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+						{PILLARS.filter((p) => p.group === g).map((p) => (
+							<a
+								href={`/${p.slug}`}
+								class="group flex flex-col rounded-2xl border border-border bg-surface/40 p-6 transition-all hover:border-roxo-light hover:bg-surface"
+							>
+								<h3 class="font-semibold text-text group-hover:text-roxo-light">{p.name}</h3>
+								<p class="mt-2 text-sm text-muted">{PILLAR_CONTENT[p.slug]?.intro}</p>
+							</a>
+						))}
+					</div>
+				</section>
+			))
+		}
+	</div>
+
+	<section class="mx-auto max-w-6xl px-6 py-20 sm:px-8">
+		<div class="bg-glow rounded-3xl border border-border p-8 text-center sm:p-12">
+			<h2 class="text-2xl font-bold sm:text-3xl">Não sabe por onde começar?</h2>
+			<p class="mx-auto mt-4 max-w-lg text-muted">
+				No diagnóstico gratuito indicamos o caminho de maior retorno para o seu momento.
+			</p>
+			<div class="mt-7 flex justify-center">
+				<Button href={whatsappLink('Olá! Quero entender quais serviços da Matra fazem sentido para a minha empresa.')} size="lg">
+					Solicitar diagnóstico gratuito
+				</Button>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

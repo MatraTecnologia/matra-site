@@ -1,0 +1,31 @@
+---
+import Button from '../ui/Button.astro';
+import { whatsappLink, NAP } from '../../config/site';
+---
+
+<section class="mx-auto max-w-6xl px-4 py-24">
+	<div class="bg-glow relative overflow-hidden rounded-3xl border border-border px-6 py-16 text-center sm:px-16" data-reveal>
+		<p class="mb-4 text-sm font-medium uppercase tracking-[0.15em] text-roxo-light">
+			Sua concorrência já está investindo em crescimento
+		</p>
+		<h2 class="mx-auto max-w-3xl text-3xl font-bold sm:text-4xl">
+			<span class="text-metal">Sua empresa vai liderar</span>
+			<span class="text-roxo-light">ou apenas acompanhar?</span>
+		</h2>
+		<p class="mx-auto mt-5 max-w-xl text-muted">
+			Fale com um especialista da Matra e receba um diagnóstico estratégico gratuito.
+			Atendemos {NAP.city} e todo o {NAP.regionName}.
+		</p>
+		<div class="mt-8 flex justify-center">
+			<Button
+				href={whatsappLink('Olá! Quero um diagnóstico gratuito da minha empresa com a Matra.')}
+				size="lg"
+			>
+				Quero resultados assim
+			</Button>
+		</div>
+		<p class="mt-5 text-xs text-muted">
+			Sem contrato de fidelidade para começar · Proposta clara, sem letra miúda
+		</p>
+	</div>
+</section>

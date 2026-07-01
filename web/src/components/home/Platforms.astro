@@ -1,0 +1,38 @@
+---
+const platforms = [
+	{ name: 'SpotAgência', desc: 'Portal do cliente com resultados em tempo real' },
+	{ name: 'Matra CRM', desc: 'Funil de vendas integrado ao Meta Ads' },
+	{ name: 'NotifyX', desc: 'Disparos em massa no WhatsApp para vendas' },
+	{ name: 'SharkPage', desc: 'Criador de landing pages drag & drop' },
+	{ name: 'SpotForm', desc: 'Formulários inteligentes de captura' },
+	{ name: 'Fire Bank', desc: 'Gestão financeira e fluxo de caixa' },
+	{ name: 'StrikeLead', desc: 'Geração e qualificação de leads' },
+	{ name: 'Foguete App', desc: 'Marketplace de soluções SaaS' },
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 py-20">
+	<div class="max-w-2xl" data-reveal>
+		<p class="text-sm font-medium uppercase tracking-[0.15em] text-roxo-light">Ecossistema próprio</p>
+		<h2 class="mt-3 text-3xl font-bold sm:text-4xl">Tecnologia que só quem é cliente da Matra tem</h2>
+		<p class="mt-4 text-muted">
+			Não terceirizamos ferramentas. Desenvolvemos nossas próprias plataformas para dar à sua
+			empresa uma vantagem que agências comuns não conseguem entregar.
+		</p>
+	</div>
+
+	<div class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+		{
+			platforms.map((p, i) => (
+				<div
+					class="rounded-xl border border-border bg-surface/40 p-5 transition-colors hover:border-roxo-light"
+					data-reveal
+					style={`--reveal-delay:${i * 60}ms;`}
+				>
+					<p class="font-semibold text-text">{p.name}</p>
+					<p class="mt-1 text-sm text-muted">{p.desc}</p>
+				</div>
+			))
+		}
+	</div>
+</section>

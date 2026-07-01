@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import TrustBar from '../components/home/TrustBar.astro';
+import ClientLogos from '../components/home/ClientLogos.astro';
+import Solutions from '../components/home/Solutions.astro';
+import SpotAgencia from '../components/home/SpotAgencia.astro';
+import Objections from '../components/home/Objections.astro';
+import Process from '../components/home/Process.astro';
+import Results from '../components/home/Results.astro';
+import CalculatorSection from '../components/home/CalculatorSection.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import Platforms from '../components/home/Platforms.astro';
+import Team from '../components/home/Team.astro';
+import Differentiators from '../components/home/Differentiators.astro';
+import StartToday from '../components/home/StartToday.astro';
+import Offer from '../components/home/Offer.astro';
+import FaqAccordion from '../components/content/FaqAccordion.astro';
+import FinalCta from '../components/home/FinalCta.astro';
+import { SITE } from '../config/site';
+
+const faq = [
+	{
+		q: 'Em quanto tempo vejo resultado?',
+		a: 'Campanhas de tráfego pago costumam gerar os primeiros resultados nas primeiras semanas. Estratégias de SEO e autoridade são de médio prazo (3 a 6 meses), mas constroem crescimento sustentável. No diagnóstico definimos as expectativas reais para o seu caso.',
+	},
+	{
+		q: 'A Matra atende empresas fora de Londrina?',
+		a: 'Sim. Somos de Londrina, mas atendemos empresas em todo o Paraná e no Brasil, de forma presencial na região e remota nas demais cidades.',
+	},
+	{
+		q: 'Preciso de um valor mínimo de investimento?',
+		a: 'Trabalhamos com diferentes portes de empresa. No diagnóstico gratuito montamos um plano adequado ao seu momento e orçamento, priorizando o que trará mais retorno primeiro.',
+	},
+	{
+		q: 'Vocês cuidam de tudo ou só de uma parte?',
+		a: 'Podemos assumir toda a operação de marketing e tecnologia ou apenas a frente que você precisa. Como temos time próprio de marketing e de desenvolvimento, tudo fica integrado sob o mesmo teto.',
+	},
+	{
+		q: 'Como acompanho os resultados?',
+		a: 'Você tem acesso a um portal exclusivo onde vê campanhas e resultados em tempo real, 24 horas por dia, além de contato direto com o time que executa o seu projeto.',
+	},
+];
+---
+
+<BaseLayout title={SITE.title} description={SITE.description}>
+	<Hero />
+	<TrustBar />
+	<ClientLogos />
+	<Solutions />
+	<SpotAgencia />
+	<Objections />
+	<Process />
+	<Results />
+	<CalculatorSection />
+	<Testimonials />
+	<Platforms />
+	<Team />
+	<Differentiators />
+	<StartToday />
+	<Offer />
+
+	<section class="mx-auto max-w-3xl px-4 py-20">
+		<h2 class="text-center text-3xl font-bold sm:text-4xl">Perguntas frequentes</h2>
+		<p class="mx-auto mt-4 max-w-xl text-center text-muted">
+			Ainda tem dúvidas? Fale com a gente no WhatsApp.
+		</p>
+		<div class="mt-10">
+			<FaqAccordion items={faq} />
+		</div>
+	</section>
+
+	<FinalCta />
+</BaseLayout>

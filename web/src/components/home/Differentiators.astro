@@ -1,0 +1,35 @@
+---
+const items = [
+	{ title: 'Time fixo de especialistas', desc: 'Nada de freelancers rotativos. Uma equipe dedicada que conhece o seu negócio de ponta a ponta.' },
+	{ title: 'Tecnologia própria', desc: 'Plataformas desenvolvidas internamente (CRM, automações, portais) que só nossos clientes têm.' },
+	{ title: 'Acesso direto, sem intermediários', desc: 'Você fala com quem executa. Comunicação rápida, transparente e sem ruído.' },
+	{ title: 'Acompanhamento em tempo real', desc: 'Veja suas campanhas e resultados 24/7 pelo nosso portal exclusivo, quando quiser.' },
+];
+---
+
+<section class="border-t border-border/60 bg-surface/30">
+	<div class="mx-auto max-w-6xl px-4 py-20">
+		<div class="max-w-2xl" data-reveal>
+			<h2 class="text-3xl font-bold sm:text-4xl">Por que empresas escolhem a Matra</h2>
+			<p class="mt-4 text-muted">Nossos clientes não querem um fornecedor. Querem um parceiro de crescimento.</p>
+		</div>
+
+		<div class="mt-10 grid gap-4 sm:grid-cols-2">
+			{
+				items.map((it, i) => (
+					<div class="flex gap-4 rounded-2xl border border-border bg-surface/40 p-6" data-reveal style={`--reveal-delay:${i * 80}ms;`}>
+						<span class="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-roxo/15 text-roxo-light">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+								<path d="M20 6 9 17l-5-5" />
+							</svg>
+						</span>
+						<div>
+							<h3 class="font-semibold text-text">{it.title}</h3>
+							<p class="mt-1 text-sm text-muted">{it.desc}</p>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

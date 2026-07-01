@@ -1,0 +1,18 @@
+---
+import RoiCalculator from '../tools/RoiCalculator.astro';
+---
+
+<section class="mx-auto max-w-6xl px-4 py-20">
+	<div class="mx-auto max-w-2xl text-center" data-reveal>
+		<p class="text-sm font-medium uppercase tracking-[0.15em] text-roxo-light">Simulador gratuito</p>
+		<h2 class="mt-3 text-3xl font-bold sm:text-4xl">Quanto sua empresa pode faturar com tráfego pago?</h2>
+		<p class="mt-4 text-muted">
+			Ajuste os números do seu negócio e veja o potencial de retorno em segundos.
+			Depois, converse com a gente para transformar essa estimativa em realidade.
+		</p>
+	</div>
+
+	<div class="mt-10" data-reveal style="--reveal-delay:100ms;">
+		<RoiCalculator />
+	</div>
+</section>

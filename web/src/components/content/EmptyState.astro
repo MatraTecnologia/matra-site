@@ -1,0 +1,23 @@
+---
+import Button from '../ui/Button.astro';
+import { whatsappLink } from '../../config/site';
+
+interface Props {
+	message?: string;
+}
+const {
+	message = 'Estamos preparando os primeiros conteúdos desta seção. Volte em breve — ou fale com a gente agora mesmo.',
+} = Astro.props;
+---
+
+<div class="rounded-3xl border border-dashed border-border bg-surface/30 p-12 text-center">
+	<div class="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-roxo/15 text-roxo-light">
+		<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+			<path d="M12 20h9M3 20h4M3 4h18M3 12h12" />
+		</svg>
+	</div>
+	<p class="mx-auto max-w-md text-muted">{message}</p>
+	<div class="mt-6 flex justify-center">
+		<Button href={whatsappLink('Olá! Vim pelo site da Matra e quero conversar.')}>Falar com um especialista</Button>
+	</div>
+</div>

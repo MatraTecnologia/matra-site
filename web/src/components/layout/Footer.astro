@@ -1,0 +1,127 @@
+---
+import { SITE, CONTACT, NAP, whatsappLink } from '../../config/site';
+import {
+	ATENDIMENTO_LONDRINA,
+	SEGMENTOS,
+	CIDADES_BAIRROS,
+	FERRAMENTAS,
+	REDES_SOCIAIS,
+} from '../../data/local-seo';
+
+const year = new Date().getFullYear();
+
+const servicos = [
+	{ nome: 'Marketing Digital', href: '/marketing-digital' },
+	{ nome: 'Tráfego Pago', href: '/trafego-pago' },
+	{ nome: 'SEO', href: '/seo' },
+	{ nome: 'Redes Sociais', href: '/redes-sociais' },
+	{ nome: 'Ver todos', href: '/servicos' },
+];
+const blog = [
+	{ nome: 'Todos os posts', href: '/blog' },
+	{ nome: 'Tráfego Pago', href: '/trafego-pago' },
+	{ nome: 'SEO', href: '/seo' },
+	{ nome: 'Marketing Digital', href: '/marketing-digital' },
+];
+const empresa = [
+	{ nome: 'Cases', href: '/casos' },
+	{ nome: 'Sobre a Matra', href: '/sobre' },
+	{ nome: 'Contato', href: '/contato' },
+];
+
+const col = 'text-sm text-muted transition-colors hover:text-roxo-light';
+---
+
+<footer class="border-t border-border/60 bg-surface">
+	<div class="mx-auto max-w-6xl px-6 py-14 sm:px-8">
+		<!-- Marca -->
+		<div class="flex flex-col gap-6 border-b border-border/60 pb-10 sm:flex-row sm:items-center sm:justify-between">
+			<div class="max-w-sm">
+				<img src="/logo-escrita.svg" alt="Matra" width="130" height="34" class="h-8 w-auto" />
+				<p class="mt-3 text-sm text-muted">
+					Marketing e tecnologia para empresas em {NAP.city} e todo o {NAP.regionName}.
+				</p>
+				<a href={whatsappLink('Olá! Vim pelo site da Matra.')} class="mt-3 inline-block text-sm text-roxo-light hover:underline">
+					{CONTACT.whatsappLabel}
+				</a>
+			</div>
+			<nav aria-label="Redes sociais" class="flex flex-wrap gap-4">
+				{REDES_SOCIAIS.map((r) => (
+					<a href={r.href} class={col} rel="noopener">{r.nome}</a>
+				))}
+			</nav>
+		</div>
+
+		<!-- Colunas principais -->
+		<div class="grid grid-cols-2 gap-8 py-10 sm:grid-cols-3 lg:grid-cols-6">
+			<nav aria-label="Serviços">
+				<h3 class="text-sm font-semibold text-text">Serviços</h3>
+				<ul class="mt-4 space-y-2.5">
+					{servicos.map((s) => <li><a href={s.href} class={col}>{s.nome}</a></li>)}
+				</ul>
+			</nav>
+
+			<nav aria-label="Atendimento em Londrina" class="col-span-2 sm:col-span-1">
+				<h3 class="text-sm font-semibold text-text">Atendimento Londrina</h3>
+				<ul class="mt-4 space-y-2.5">
+					{ATENDIMENTO_LONDRINA.map((a) => <li><a href={a.href} class={col}>{a.label}</a></li>)}
+				</ul>
+			</nav>
+
+			<nav aria-label="Ferramentas grátis">
+				<h3 class="text-sm font-semibold text-text">Ferramentas Grátis</h3>
+				<ul class="mt-4 space-y-2.5">
+					{FERRAMENTAS.map((f) => <li><a href={f.href} class={col}>{f.nome}</a></li>)}
+				</ul>
+			</nav>
+
+			<nav aria-label="Blog">
+				<h3 class="text-sm font-semibold text-text">Blog</h3>
+				<ul class="mt-4 space-y-2.5">
+					{blog.map((b) => <li><a href={b.href} class={col}>{b.nome}</a></li>)}
+				</ul>
+			</nav>
+
+			<nav aria-label="Empresa">
+				<h3 class="text-sm font-semibold text-text">Empresa</h3>
+				<ul class="mt-4 space-y-2.5">
+					{empresa.map((e) => <li><a href={e.href} class={col}>{e.nome}</a></li>)}
+				</ul>
+			</nav>
+
+			<nav aria-label="Segmentos" class="col-span-2 sm:col-span-3 lg:col-span-1">
+				<h3 class="text-sm font-semibold text-text">Segmentos</h3>
+				<ul class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 lg:grid-cols-1">
+					{SEGMENTOS.map((s) => <li><a href={s.href} class={col}>{s.nome}</a></li>)}
+				</ul>
+			</nav>
+		</div>
+
+		<!-- Bairros e cidades -->
+		<div class="border-t border-border/60 py-10">
+			<h3 class="text-sm font-semibold text-text">Atendimento por cidade e bairro</h3>
+			<div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+				{
+					CIDADES_BAIRROS.map((c) => (
+						<details class="group rounded-xl border border-border bg-surface-2/40 px-4">
+							<summary class="flex cursor-pointer list-none items-center justify-between py-3 text-sm font-medium text-text">
+								<a href={c.href} class="hover:text-roxo-light">Bairros de {c.cidade}</a>
+								<svg class="text-muted transition-transform group-open:rotate-180" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+							</summary>
+							<ul class="grid grid-cols-2 gap-x-4 gap-y-2 pb-4">
+								{c.bairros.map((b) => <li><a href={b.href} class={col}>{b.nome}</a></li>)}
+							</ul>
+						</details>
+					))
+				}
+			</div>
+		</div>
+	</div>
+
+	<div class="border-t border-border/60">
+		<div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-6 text-xs text-muted sm:flex-row sm:px-8">
+			<p>© {year} {SITE.legalName}. Todos os direitos reservados.</p>
+			<p>{NAP.city} — {NAP.region} · {CONTACT.email}</p>
+		</div>
+	</div>
+</footer>

@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Button from '../../components/ui/Button.astro';
+import { whatsappLink } from '../../config/site';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Ferramentas', url: '/ferramentas' },
+];
+
+const tools = [
+	{
+		slug: 'simulador-de-roi',
+		name: 'Simulador de ROI',
+		description: 'Descubra em segundos o potencial de faturamento do seu investimento em anúncios.',
+	},
+	{
+		slug: 'calculadora-de-trafego-pago',
+		name: 'Calculadora de Tráfego Pago',
+		description: 'Do investimento ao faturamento: estime cliques, leads, vendas e retorno da sua campanha.',
+	},
+	{
+		slug: 'checklist-google-meu-negocio',
+		name: 'Checklist do Google Meu Negócio',
+		description: 'Avalie a otimização do seu perfil e ganhe um score de presença no Google Maps.',
+	},
+	{
+		slug: 'diagnostico-de-presenca-digital',
+		name: 'Diagnóstico de Presença Digital',
+		description: '8 perguntas rápidas para medir a maturidade digital da sua empresa e o que priorizar.',
+	},
+	{
+		slug: 'gerador-de-briefing',
+		name: 'Gerador de Briefing',
+		description: 'Monte um briefing de campanha profissional e organizado em menos de 2 minutos.',
+	},
+];
+---
+
+<BaseLayout
+	title="Ferramentas Grátis de Marketing Digital | Matra"
+	description="Calculadoras, checklists e diagnósticos gratuitos para planejar tráfego pago, otimizar seu Google Meu Negócio e medir sua presença digital. Sem cadastro."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Ferramentas grátis" crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Ferramentas gratuitas</span>
+			<span class="text-roxo-light">para crescer com estratégia</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Calculadoras, checklists e diagnósticos rápidos para você planejar melhor o marketing da sua
+			empresa. Sem cadastro, direto ao resultado.
+		</Fragment>
+	</PageHeader>
+
+	<div class="mx-auto max-w-4xl px-6 pb-4 sm:px-8">
+		<div class="grid gap-4 sm:grid-cols-2">
+			{
+				tools.map((t) => (
+					<a
+						href={`/ferramentas/${t.slug}`}
+						data-reveal
+						class="group flex flex-col rounded-2xl border border-border bg-surface/40 p-6 transition-all hover:border-roxo-light hover:bg-surface"
+					>
+						<h2 class="font-semibold text-text group-hover:text-roxo-light">{t.name}</h2>
+						<p class="mt-2 text-sm text-muted">{t.description}</p>
+						<span class="mt-4 text-sm font-medium text-roxo-light">
+							Usar ferramenta →
+						</span>
+					</a>
+				))
+			}
+		</div>
+	</div>
+
+	<section class="mx-auto max-w-4xl px-6 py-20 sm:px-8">
+		<div class="bg-glow rounded-3xl border border-border p-8 text-center sm:p-12">
+			<h2 class="text-2xl font-bold sm:text-3xl">Quer ir além das ferramentas?</h2>
+			<p class="mx-auto mt-4 max-w-lg text-muted">
+				A Matra transforma esses números em resultado real, com estratégia, execução e
+				acompanhamento próximo.
+			</p>
+			<div class="mt-7 flex justify-center">
+				<Button href={whatsappLink('Olá! Usei as ferramentas do site e quero conversar com a Matra sobre o marketing da minha empresa.')} size="lg">
+					Falar com um especialista
+				</Button>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

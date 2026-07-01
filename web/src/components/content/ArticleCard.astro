@@ -1,0 +1,30 @@
+---
+import { pillarBySlug } from '../../config/pillars';
+
+interface Props {
+	href: string;
+	title: string;
+	description: string;
+	pubDate?: Date;
+	pillar?: string;
+}
+const { href, title, description, pubDate, pillar } = Astro.props;
+const pillarName = pillar ? pillarBySlug(pillar)?.name : undefined;
+const dateLabel = pubDate
+	? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(pubDate)
+	: undefined;
+---
+
+<a
+	href={href}
+	class="group flex flex-col rounded-2xl border border-border bg-surface/40 p-6 transition-all hover:border-roxo-light hover:bg-surface"
+>
+	{pillarName && (
+		<span class="mb-3 w-fit rounded-full border border-roxo/30 bg-roxo/10 px-3 py-1 text-xs text-roxo-light">
+			{pillarName}
+		</span>
+	)}
+	<h3 class="text-lg font-semibold text-text group-hover:text-roxo-light">{title}</h3>
+	<p class="mt-2 line-clamp-3 text-sm text-muted">{description}</p>
+	{dateLabel && <p class="mt-4 text-xs text-muted">{dateLabel}</p>}
+</a>

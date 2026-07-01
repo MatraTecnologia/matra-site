@@ -1,0 +1,32 @@
+---
+const clients = [
+	'Decol Design',
+	'COMAFE',
+	'Clínica Renova',
+	'RM Construtora',
+	'V7 Imobiliária',
+	'Web3Valley',
+	'Dr. Tem Tudo',
+	'EdTech Clareza',
+	'Auto Primavera',
+	'Leo Fernandes',
+];
+const loop = [...clients, ...clients];
+---
+
+<section class="border-y border-border/60 bg-surface/20 py-10">
+	<p class="mb-6 text-center text-xs uppercase tracking-[0.2em] text-muted">
+		Empresas que já crescem com a Matra
+	</p>
+	<div class="marquee overflow-hidden">
+		<ul class="marquee-track flex w-max items-center gap-12 whitespace-nowrap px-6">
+			{
+				loop.map((name) => (
+					<li class="text-lg font-semibold text-muted/70 transition-colors hover:text-text">
+						{name}
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

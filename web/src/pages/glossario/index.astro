@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import EmptyState from '../../components/content/EmptyState.astro';
+
+const termos = (await getCollection('glossario')).sort((a, b) =>
+	a.data.term.localeCompare(b.data.term, 'pt-BR'),
+);
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Glossário', url: '/glossario' },
+];
+---
+
+<BaseLayout
+	title="Glossário de Marketing e Tecnologia"
+	description="Os principais termos de marketing digital, tráfego pago, SEO e tecnologia explicados de forma simples e direta."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Referência" crumbs={crumbs} width="xl">
+		<Fragment slot="title">
+			<span class="text-metal">Glossário de</span>
+			<span class="text-roxo-light">marketing e tecnologia</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Os termos que você mais ouve — explicados de forma simples, direta e sem enrolação.
+		</Fragment>
+	</PageHeader>
+
+	<section class="mx-auto max-w-4xl px-6 pb-24 sm:px-8">
+		{
+			termos.length > 0 ? (
+				<dl class="divide-y divide-border/60 rounded-2xl border border-border bg-surface/40">
+					{termos.map((t) => (
+						<div class="px-6 py-5">
+							<dt class="font-semibold text-text">
+								<a href={`/glossario/${t.id}/`} class="hover:text-roxo-light">{t.data.term}</a>
+							</dt>
+							<dd class="mt-1 text-sm text-muted">{t.data.shortDefinition}</dd>
+						</div>
+					))}
+				</dl>
+			) : (
+				<EmptyState message="Estamos montando o glossário. Enquanto isso, se ficou com alguma dúvida de marketing ou tecnologia, é só chamar no WhatsApp." />
+			)
+		}
+	</section>
+</BaseLayout>

@@ -1,0 +1,88 @@
+---
+import { TESTIMONIALS } from '../../data/testimonials';
+---
+
+<section class="mx-auto max-w-6xl px-4 py-20">
+	<div class="max-w-2xl" data-reveal>
+		<h2 class="text-3xl font-bold sm:text-4xl">Resultado real. Na voz de quem viveu</h2>
+		<p class="mt-4 text-muted">
+			Veja no vídeo o que empresas do Paraná conquistaram com marketing e tecnologia da Matra.
+		</p>
+	</div>
+
+	<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+		{
+			TESTIMONIALS.map((t, i) => (
+				<div
+					class="reel group relative aspect-[9/16] overflow-hidden rounded-2xl border border-border transition-all hover:border-roxo-light"
+					data-embed={`${t.url}embed`}
+					data-reveal
+					style={`--reveal-delay:${i * 90}ms;`}
+				>
+					<button
+						type="button"
+						class="reel-cover absolute inset-0 flex cursor-pointer flex-col justify-between p-6 text-left"
+						aria-label={`Assistir depoimento: ${t.result} ${t.label}`}
+						style="background: radial-gradient(120% 80% at 20% 0%, rgba(155,7,240,0.35), transparent 55%), radial-gradient(120% 90% at 100% 100%, rgba(191,86,252,0.28), transparent 50%), #0b0b0f;"
+					>
+						<div class="flex items-center justify-between">
+							<span class="rounded-full border border-border/70 bg-black/30 px-3 py-1 text-xs text-muted backdrop-blur">
+								{t.segment}
+							</span>
+							<span class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-transform group-hover:scale-110">
+								<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+									<path d="M8 5v14l11-7z" />
+								</svg>
+							</span>
+						</div>
+						<div>
+							<p class="text-4xl font-extrabold text-metal">{t.result}</p>
+							<p class="mt-2 text-sm text-white/80">{t.label}</p>
+							<span class="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-roxo-light">
+								Assistir depoimento →
+							</span>
+						</div>
+					</button>
+				</div>
+			))
+		}
+	</div>
+
+	<figure
+		class="mt-6 rounded-2xl border border-border bg-surface/40 p-8"
+		data-reveal
+	>
+		<blockquote class="text-lg text-text">
+			“Com a Matra ultrapassamos <strong class="text-roxo-light">R$ 1 milhão por mês</strong> em
+			faturamento, superamos a meta em <strong class="text-roxo-light">3×</strong> e tivemos retorno
+			positivo já no primeiro mês.”
+		</blockquote>
+		<figcaption class="mt-4 text-sm text-muted">
+			<span class="font-medium text-text">Decol Design</span> · Cliente Matra
+		</figcaption>
+	</figure>
+</section>
+
+<script is:inline>
+	const loadReel = (el) => {
+		if (el.dataset.loaded) return;
+		el.dataset.loaded = '1';
+		const iframe = document.createElement('iframe');
+		iframe.src = el.dataset.embed;
+		iframe.loading = 'lazy';
+		iframe.title = 'Depoimento em vídeo';
+		iframe.className = 'absolute inset-0 h-full w-full';
+		iframe.setAttribute('allowtransparency', 'true');
+		iframe.setAttribute('allow', 'encrypted-media');
+		iframe.setAttribute('scrolling', 'no');
+		el.innerHTML = '';
+		el.appendChild(iframe);
+	};
+	const initReels = () => {
+		document.querySelectorAll('.reel .reel-cover').forEach((btn) => {
+			btn.addEventListener('click', () => loadReel(btn.closest('.reel')), { once: true });
+		});
+	};
+	initReels();
+	document.addEventListener('astro:page-load', initReels);
+</script>

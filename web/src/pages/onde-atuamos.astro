@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Button from '../components/ui/Button.astro';
+import { whatsappLink, NAP } from '../config/site';
+import { CIDADES_CONTENT } from '../data/local-conteudo';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Onde atuamos', url: '/onde-atuamos' },
+];
+
+const cidades = CIDADES_CONTENT.map((c) => ({ nome: c.nome, href: `/marketing-em-${c.slug}` }));
+---
+
+<BaseLayout
+	title="Onde atuamos — Marketing e Tecnologia no Paraná"
+	description="A Matra atende empresas em Londrina e em todo o Paraná, com atendimento presencial na região e remoto em qualquer cidade."
+	class="bg-glow"
+>
+	<PageHeader eyebrow={`Base em ${NAP.city}`} crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Marketing e tecnologia</span>
+			<span class="text-roxo-light">para todo o Paraná</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Somos de {NAP.city} e atendemos empresas em todo o estado — presencialmente na região
+			e remotamente em qualquer cidade, com a mesma qualidade e acompanhamento em tempo real.
+		</Fragment>
+		<Button slot="actions" href={whatsappLink('Olá! Quero saber como a Matra pode atender a minha cidade.')} size="lg">
+			Atendemos a sua cidade
+		</Button>
+	</PageHeader>
+
+	<section class="mx-auto max-w-4xl px-6 pb-24 sm:px-8">
+		<h2 class="text-lg font-semibold text-text">Cidades que já atendemos</h2>
+		<div class="mt-5 flex flex-wrap gap-3">
+			{
+				cidades.map((c) => (
+					<a href={c.href} class="rounded-full border border-border bg-surface/40 px-4 py-2 text-sm text-muted transition-colors hover:border-roxo-light hover:text-roxo-light">{c.nome}</a>
+				))
+			}
+			<span class="rounded-full border border-roxo/40 bg-roxo/10 px-4 py-2 text-sm text-roxo-light">e todo o {NAP.regionName}</span>
+		</div>
+	</section>
+</BaseLayout>

@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Team from '../components/home/Team.astro';
+import Button from '../components/ui/Button.astro';
+import { whatsappLink, NAP } from '../config/site';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Sobre', url: '/sobre' },
+];
+
+const stats = [
+	{ v: '+6', l: 'anos de mercado' },
+	{ v: '+20', l: 'clientes ativos' },
+	{ v: '9', l: 'plataformas próprias' },
+	{ v: 'R$ 500k+', l: 'em software entregue' },
+];
+---
+
+<BaseLayout
+	title="Sobre a Matra"
+	description="Somos uma empresa de marketing e tecnologia de Londrina que constrói máquinas de crescimento para empresas de todo o Paraná."
+	class="bg-glow"
+>
+	<PageHeader crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Não criamos campanhas.</span>
+			<span class="text-roxo-light">Construímos máquinas de crescimento.</span>
+		</Fragment>
+	</PageHeader>
+
+	<section class="mx-auto max-w-4xl px-6 pb-14 sm:px-8">
+		<div class="max-w-2xl space-y-4 text-muted">
+			<p>
+				A Matra nasceu em {NAP.city} com uma convicção: empresas não precisam de mais um
+				fornecedor — precisam de um parceiro de crescimento. Por isso unimos marketing
+				estratégico, tráfego pago e tecnologia própria em uma única operação.
+			</p>
+			<p>
+				Desenvolvemos nossas próprias plataformas, mantemos um time fixo de especialistas e
+				damos ao cliente acesso total aos resultados em tempo real. Atendemos {NAP.city} e todo
+				o {NAP.regionName}, presencialmente na região e remotamente em qualquer lugar.
+			</p>
+		</div>
+
+		<dl class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+			{
+				stats.map((s) => (
+					<div class="rounded-xl border border-border bg-surface/40 p-5 text-center">
+						<dt class="text-2xl font-bold text-metal">{s.v}</dt>
+						<dd class="mt-1 text-xs text-muted">{s.l}</dd>
+					</div>
+				))
+			}
+		</dl>
+	</section>
+
+	<Team />
+
+	<section class="mx-auto max-w-4xl px-6 py-20 text-center sm:px-8">
+		<h2 class="text-2xl font-bold sm:text-3xl">Quer a Matra no seu time?</h2>
+		<div class="mt-7 flex justify-center">
+			<Button href={whatsappLink('Olá! Conheci a Matra e quero conversar sobre o meu negócio.')} size="lg">
+				Falar com um especialista
+			</Button>
+		</div>
+	</section>
+</BaseLayout>

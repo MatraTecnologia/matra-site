@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Button from '../../components/ui/Button.astro';
+import { whatsappLink } from '../../config/site';
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Ferramentas', url: '/ferramentas' },
+	{ name: 'Checklist do Google Meu Negócio', url: '/ferramentas/checklist-google-meu-negocio' },
+];
+
+const items = [
+	{
+		id: 'perfil',
+		title: 'Perfil 100% completo e verificado',
+		hint: 'Nome, endereço, telefone e área de atendimento preenchidos e confirmados pelo Google.',
+	},
+	{
+		id: 'categorias',
+		title: 'Categoria principal e secundárias corretas',
+		hint: 'A categoria principal define para quais buscas você aparece. Adicione as secundárias relevantes.',
+	},
+	{
+		id: 'fotos',
+		title: 'Fotos e vídeos atualizados',
+		hint: 'Fachada, ambiente interno, equipe e produtos. Perfis com fotos recebem mais cliques e rotas.',
+	},
+	{
+		id: 'horario',
+		title: 'Horário de funcionamento e feriados',
+		hint: 'Mantenha o horário atualizado, incluindo datas especiais, para não frustrar quem te procura.',
+	},
+	{
+		id: 'avaliacoes',
+		title: 'Avaliações recentes e respondidas',
+		hint: 'Peça avaliações aos clientes e responda a todas, positivas e negativas. Isso pesa no ranqueamento.',
+	},
+	{
+		id: 'posts',
+		title: 'Posts e novidades frequentes',
+		hint: 'Publique ofertas, novidades e eventos regularmente para manter o perfil ativo aos olhos do Google.',
+	},
+	{
+		id: 'produtos',
+		title: 'Produtos e serviços cadastrados',
+		hint: 'Liste seus produtos/serviços com descrição e preço. Enriquece o perfil e ajuda na conversão.',
+	},
+	{
+		id: 'descricao',
+		title: 'Descrição com palavras-chave',
+		hint: 'Descreva o negócio usando os termos que os clientes buscam, de forma natural.',
+	},
+	{
+		id: 'whatsapp',
+		title: 'WhatsApp e botão de contato ativos',
+		hint: 'Facilite o contato direto. Menos atrito significa mais mensagens e ligações.',
+	},
+	{
+		id: 'site',
+		title: 'Link do site e agendamento',
+		hint: 'Conecte seu site e, se fizer sentido, o botão de agendamento ou pedidos.',
+	},
+];
+---
+
+<BaseLayout
+	title="Checklist do Google Meu Negócio Grátis | Matra"
+	description="Avalie a otimização do seu perfil no Google Meu Negócio com um checklist interativo de 10 pontos e receba um score de presença no Google Maps."
+	class="bg-glow"
+>
+	<PageHeader eyebrow="Ferramenta grátis" crumbs={crumbs}>
+		<Fragment slot="title">
+			<span class="text-metal">Checklist do</span>
+			<span class="text-roxo-light">Google Meu Negócio</span>
+		</Fragment>
+		<Fragment slot="lead">
+			Marque o que já está feito e descubra o quanto seu perfil está otimizado para aparecer no
+			Google Maps e nas buscas locais. Quanto maior o score, mais clientes te encontram.
+		</Fragment>
+	</PageHeader>
+
+	<div class="mx-auto max-w-4xl px-6 pb-4 sm:px-8" data-reveal>
+		<div class="gmn-checklist rounded-3xl border border-border bg-surface/40 p-6 sm:p-10">
+			<div class="mb-8 rounded-2xl border border-roxo/30 bg-roxo/5 p-6">
+				<div class="flex items-end justify-between">
+					<div>
+						<p class="text-sm text-muted">Seu score de otimização</p>
+						<p class="mt-1 text-4xl font-extrabold text-metal">
+							<span data-gmn-score>0</span>%
+						</p>
+					</div>
+					<p class="text-sm text-muted">
+						<span data-gmn-count>0</span> de {items.length} itens
+					</p>
+				</div>
+				<div class="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-surface-2">
+					<div class="h-full rounded-full bg-roxo transition-all duration-300" style="width:0%" data-gmn-bar></div>
+				</div>
+				<p class="mt-3 text-sm text-roxo-light" data-gmn-verdict></p>
+			</div>
+
+			<ul class="space-y-3">
+				{
+					items.map((it) => (
+						<li>
+							<label
+								for={`gmn-${it.id}`}
+								class="flex cursor-pointer gap-4 rounded-2xl border border-border bg-surface-2 p-4 transition-colors hover:border-roxo-light"
+							>
+								<input
+									id={`gmn-${it.id}`}
+									type="checkbox"
+									data-gmn-item
+									class="mt-1 h-5 w-5 shrink-0 accent-roxo"
+								/>
+								<span>
+									<span class="block font-semibold text-text">{it.title}</span>
+									<span class="mt-1 block text-sm text-muted">{it.hint}</span>
+								</span>
+							</label>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+
+	<section class="mx-auto max-w-4xl px-6 py-20 sm:px-8">
+		<div class="bg-glow rounded-3xl border border-border p-8 text-center sm:p-12">
+			<h2 class="text-2xl font-bold sm:text-3xl">Quer o perfil no topo do Google Maps?</h2>
+			<p class="mx-auto mt-4 max-w-lg text-muted">
+				A Matra otimiza e gerencia seu Google Meu Negócio para você aparecer nas buscas locais e
+				atrair mais clientes.
+			</p>
+			<div class="mt-7 flex justify-center">
+				<Button href={whatsappLink('Olá! Fiz o checklist do Google Meu Negócio no site e quero ajuda da Matra para otimizar meu perfil.')} size="lg">
+					Quero otimizar meu perfil
+				</Button>
+			</div>
+		</div>
+	</section>
+
+	<script is:inline>
+		const initGmn = () => {
+			document.querySelectorAll('.gmn-checklist').forEach((root) => {
+				if (root.dataset.init) return;
+				root.dataset.init = '1';
+				const boxes = [...root.querySelectorAll('[data-gmn-item]')];
+				const total = boxes.length;
+				const scoreEl = root.querySelector('[data-gmn-score]');
+				const countEl = root.querySelector('[data-gmn-count]');
+				const barEl = root.querySelector('[data-gmn-bar]');
+				const verdictEl = root.querySelector('[data-gmn-verdict]');
+				const verdict = (pct) => {
+					if (pct === 0) return 'Comece marcando o que já está feito no seu perfil.';
+					if (pct < 40) return 'Seu perfil ainda deixa muitos clientes na mesa. Há bastante a otimizar.';
+					if (pct < 70) return 'Bom começo! Alguns ajustes e você destrava mais visibilidade.';
+					if (pct < 100) return 'Quase lá! Faltam poucos detalhes para um perfil de referência.';
+					return 'Perfil completo! Agora é manter a constância de posts e avaliações.';
+				};
+				const update = () => {
+					const done = boxes.filter((b) => b.checked).length;
+					const pct = Math.round((done / total) * 100);
+					scoreEl.textContent = pct;
+					countEl.textContent = done;
+					barEl.style.width = pct + '%';
+					verdictEl.textContent = verdict(pct);
+				};
+				boxes.forEach((b) => b.addEventListener('change', update));
+				update();
+			});
+		};
+		initGmn();
+		document.addEventListener('astro:page-load', initGmn);
+	</script>
+</BaseLayout>
