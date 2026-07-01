@@ -1,0 +1,149 @@
+---
+import { CONTACT } from '../../config/site';
+
+const steps = [
+	{
+		q: 'O que você mais quer para a sua empresa agora?',
+		options: ['Mais clientes e vendas', 'Um site ou sistema profissional', 'Presença digital e autoridade', 'Não sei, preciso de ajuda'],
+	},
+	{
+		q: 'Qual é o seu segmento?',
+		options: ['Saúde / Clínica', 'Imobiliária / Construção', 'Comércio / Loja', 'Serviços', 'Alimentação', 'Outro'],
+	},
+	{
+		q: 'Quanto você investe em marketing hoje?',
+		options: ['Ainda não invisto', 'Até R$ 1.000/mês', 'R$ 1.000 a R$ 5.000', 'Acima de R$ 5.000'],
+	},
+];
+---
+
+<div
+	class="quiz-popup fixed inset-0 z-[60] hidden items-center justify-center p-4"
+	data-wa={CONTACT.whatsapp}
+	role="dialog"
+	aria-modal="true"
+	aria-label="Diagnóstico rápido"
+>
+	<div class="quiz-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+
+	<div class="bg-glow relative w-full max-w-md rounded-3xl border border-border bg-surface p-6 shadow-2xl sm:p-8">
+		<button class="quiz-x absolute right-4 top-4 text-muted transition-colors hover:text-text" aria-label="Fechar">
+			<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+		</button>
+
+		<p class="text-xs font-medium uppercase tracking-[0.15em] text-roxo-light">Diagnóstico rápido · 15 segundos</p>
+
+		<!-- Barra de progresso -->
+		<div class="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-2">
+			<div class="quiz-bar h-full rounded-full bg-roxo-light transition-all duration-300" style="width:0%"></div>
+		</div>
+
+		<!-- Perguntas -->
+		{steps.map((step, i) => (
+			<div class="quiz-step mt-6" data-step={i} hidden={i !== 0}>
+				<h2 class="text-xl font-bold text-text">{step.q}</h2>
+				<div class="mt-4 space-y-2">
+					{step.options.map((opt) => (
+						<button
+							class="quiz-opt w-full rounded-xl border border-border bg-surface-2/60 px-4 py-3 text-left text-sm text-text transition-all hover:border-roxo-light hover:bg-surface-2"
+							data-value={opt}
+						>
+							{opt}
+						</button>
+					))}
+				</div>
+			</div>
+		))}
+
+		<!-- Resultado -->
+		<div class="quiz-result mt-6 text-center" hidden>
+			<div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-roxo/15 text-2xl">🚀</div>
+			<h2 class="text-xl font-bold text-text">Prontinho! Seu diagnóstico está pronto</h2>
+			<p class="mt-2 text-sm text-muted">
+				Um especialista da Matra vai te ajudar a montar o plano ideal. É só continuar no WhatsApp.
+			</p>
+			<a
+				class="quiz-wa mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 font-medium text-white transition-transform hover:scale-[1.02]"
+				href="#"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.477-.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+				Continuar no WhatsApp
+			</a>
+			<button class="quiz-x mt-3 block w-full text-xs text-muted hover:text-text">Agora não, obrigado</button>
+		</div>
+	</div>
+</div>
+
+<script is:inline>
+	const initQuiz = () => {
+		const root = document.querySelector('.quiz-popup');
+		if (!root || root.dataset.init) return;
+		root.dataset.init = '1';
+
+		const KEY = 'matra_quiz_seen';
+		const wa = root.dataset.wa;
+		const steps = [...root.querySelectorAll('.quiz-step')];
+		const result = root.querySelector('.quiz-result');
+		const bar = root.querySelector('.quiz-bar');
+		const waLink = root.querySelector('.quiz-wa');
+		const labels = ['Objetivo', 'Segmento', 'Investimento'];
+		const answers = [];
+		let idx = 0;
+
+		const open = () => {
+			if (sessionStorage.getItem(KEY)) return;
+			root.classList.remove('hidden');
+			root.classList.add('flex');
+			document.body.style.overflow = 'hidden';
+		};
+		const close = () => {
+			root.classList.add('hidden');
+			root.classList.remove('flex');
+			document.body.style.overflow = '';
+			sessionStorage.setItem(KEY, '1');
+		};
+
+		const show = (i) => {
+			steps.forEach((s, n) => (s.hidden = n !== i));
+			bar.style.width = `${(i / steps.length) * 100}%`;
+		};
+		const finish = () => {
+			bar.style.width = '100%';
+			steps.forEach((s) => (s.hidden = true));
+			result.hidden = false;
+			const msg =
+				'Olá! Fiz o diagnóstico rápido no site da Matra.%0A' +
+				answers.map((a, n) => `- ${labels[n]}: ${a}`).join('%0A') +
+				'%0AQuero conversar com um especialista!';
+			waLink.href = `https://wa.me/${wa}?text=${msg}`;
+		};
+
+		root.querySelectorAll('.quiz-opt').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				answers[idx] = btn.dataset.value;
+				idx += 1;
+				if (idx < steps.length) show(idx);
+				else finish();
+			});
+		});
+		waLink.addEventListener('click', () => setTimeout(close, 100));
+		root.querySelectorAll('.quiz-x, .quiz-backdrop').forEach((el) => el.addEventListener('click', close));
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && !root.classList.contains('hidden')) close();
+		});
+
+		// Dispara ao rolar ~45% da página (uma vez por sessão)
+		const onScroll = () => {
+			const scrolled = window.scrollY + window.innerHeight;
+			if (scrolled > document.body.scrollHeight * 0.45) {
+				open();
+				window.removeEventListener('scroll', onScroll);
+			}
+		};
+		window.addEventListener('scroll', onScroll, { passive: true });
+	};
+	initQuiz();
+	document.addEventListener('astro:page-load', initQuiz);
+</script>
