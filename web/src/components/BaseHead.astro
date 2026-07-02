@@ -45,7 +45,12 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.name}`;
 <Font cssVariable="--font-display" preload />
 
 <link rel="canonical" href={canonicalURL} />
-{noindex && <meta name="robots" content="noindex,nofollow" />}
+<meta
+	name="robots"
+	content={noindex
+		? 'noindex,nofollow'
+		: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}
+/>
 
 <title>{fullTitle}</title>
 <meta name="description" content={description} />

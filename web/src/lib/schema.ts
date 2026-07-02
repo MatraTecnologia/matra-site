@@ -6,19 +6,36 @@ export const ORG_ID = abs('/#organization');
 export const WEBSITE_ID = abs('/#website');
 
 export const organizationSchema = () => ({
-	'@type': 'Organization',
+	'@type': ['Organization', 'ProfessionalService'],
 	'@id': ORG_ID,
 	name: SITE.legalName,
+	alternateName: SITE.name,
 	url: SITE.url,
 	logo: abs('/logo.png'),
 	image: abs('/logo.png'),
 	email: CONTACT.email,
+	telephone: CONTACT.whatsappLabel,
+	foundingDate: '2020',
+	knowsLanguage: SITE.locale,
 	areaServed: { '@type': 'State', name: NAP.regionName },
 	address: {
 		'@type': 'PostalAddress',
 		addressLocality: NAP.city,
 		addressRegion: NAP.region,
 		addressCountry: NAP.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: NAP.latitude,
+		longitude: NAP.longitude,
+	},
+	contactPoint: {
+		'@type': 'ContactPoint',
+		telephone: CONTACT.whatsappLabel,
+		email: CONTACT.email,
+		contactType: 'customer service',
+		areaServed: NAP.country,
+		availableLanguage: 'Portuguese',
 	},
 	sameAs: [CONTACT.instagram, NAP.mapUrl],
 });
@@ -30,11 +47,6 @@ export const websiteSchema = () => ({
 	name: SITE.name,
 	inLanguage: SITE.locale,
 	publisher: { '@id': ORG_ID },
-	potentialAction: {
-		'@type': 'SearchAction',
-		target: { '@type': 'EntryPoint', urlTemplate: abs('/busca?q={query}') },
-		'query-input': 'required name=query',
-	},
 });
 
 type ArticleInput = {
