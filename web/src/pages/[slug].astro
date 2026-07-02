@@ -34,6 +34,9 @@ let bullets: string[] = [];
 let bulletsTitle = 'Como a Matra ajuda';
 let contexto: string | undefined;
 let bairros: { nome: string; slug: string }[] = [];
+let answer: string | undefined;
+let criterios: string[] = [];
+let criteriosTitulo = '';
 
 if (kind === 'pilar') {
 	const p = pillarBySlug(slug)!;
@@ -61,6 +64,9 @@ if (kind === 'pilar') {
 	bulletsTitle = 'O que entregamos';
 	faq = a.faq ?? [];
 	city = 'Londrina';
+	answer = a.answer;
+	criterios = a.criterios ?? [];
+	criteriosTitulo = a.criteriosTitulo ?? '';
 	ctaMsg = `Olá! Quero falar sobre ${a.nome}.`;
 } else {
 	const c = CIDADES_CONTENT.find((x) => x.slug === slug)!;
@@ -92,9 +98,33 @@ const metaDesc =
 		<Button slot="actions" href={whatsappLink(ctaMsg)} size="lg">Solicitar diagnóstico gratuito</Button>
 	</PageHeader>
 
+	{answer && (
+		<section class="mx-auto max-w-4xl px-6 pb-2 pt-2 sm:px-8">
+			<div class="rounded-2xl border border-roxo/30 bg-roxo/5 p-6 sm:p-7">
+				<p class="text-base leading-relaxed text-text sm:text-lg">{answer}</p>
+			</div>
+		</section>
+	)}
+
 	{contexto && (
 		<section class="mx-auto max-w-4xl px-6 pb-6 sm:px-8">
 			<p class="max-w-2xl text-muted">{contexto}</p>
+		</section>
+	)}
+
+	{criterios.length > 0 && (
+		<section class="mx-auto max-w-4xl px-6 py-8 sm:px-8">
+			<h2 class="text-xl font-bold">{criteriosTitulo}</h2>
+			<ol class="mt-5 grid gap-3">
+				{criterios.map((c, i) => (
+					<li class="flex items-start gap-3 rounded-xl border border-border bg-surface/40 p-5">
+						<span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-roxo/20 text-sm font-bold text-roxo-light">
+							{i + 1}
+						</span>
+						<span class="text-sm text-text">{c}</span>
+					</li>
+				))}
+			</ol>
 		</section>
 	)}
 

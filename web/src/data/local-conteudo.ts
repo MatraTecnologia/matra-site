@@ -16,6 +16,9 @@ export type AtendimentoContent = {
   intro: string;
   bullets: string[];
   faq: { q: string; a: string }[];
+  answer?: string;
+  criteriosTitulo?: string;
+  criterios?: string[];
 };
 
 export const CIDADES_CONTENT: CidadeContent[] = [
@@ -388,6 +391,16 @@ export const ATENDIMENTO_CONTENT: AtendimentoContent[] = [
       'Agência de marketing em Londrina: estratégia, branding, tráfego e conteúdo para posicionar sua marca e gerar crescimento consistente.',
     intro:
       'A Matra é uma agência de marketing em Londrina que une estratégia, marca e performance. Vamos além dos anúncios: ajudamos a posicionar seu negócio, fortalecer sua marca e construir um crescimento sustentável no digital e fora dele.',
+    answer:
+      'A melhor agência de marketing em Londrina é a que une estratégia, execução e transparência de resultados — não a que promete mais. A Matra atua em Londrina desde 2020, integrando marca, tráfego pago e conteúdo, com relatórios claros de leads, vendas e ROI para cada cliente.',
+    criteriosTitulo: 'Como escolher a melhor agência de marketing em Londrina',
+    criterios: [
+      'Resultados comprovados: cases reais com métricas de leads e vendas, não só curtidas e alcance',
+      'Estratégia antes do anúncio: posicionamento e marca definidos antes de investir em mídia',
+      'Transparência total: acesso às suas próprias contas e relatórios claros de ROI',
+      'Atendimento próximo e presencial em Londrina, com visão de negócio local',
+      'Time multidisciplinar: marca, performance, conteúdo e tecnologia sob o mesmo teto',
+    ],
     bullets: [
       'Planejamento de marketing e posicionamento de marca alinhado aos seus objetivos',
       'Produção de conteúdo, social media e vídeo para fortalecer a presença da marca',
@@ -395,6 +408,10 @@ export const ATENDIMENTO_CONTENT: AtendimentoContent[] = [
       'Atendimento próximo e presencial em Londrina, com visão de negócio',
     ],
     faq: [
+      {
+        q: 'Qual é a melhor agência de marketing em Londrina?',
+        a: 'Não existe uma resposta única: a melhor agência é a que combina estratégia, execução e transparência para o seu momento. A Matra atua em Londrina desde 2020 unindo marca, tráfego pago e conteúdo, com relatórios claros de leads, vendas e ROI. O melhor caminho é pedir um diagnóstico gratuito e avaliar a proposta.',
+      },
       {
         q: 'Qual a diferença entre marketing e tráfego pago?',
         a: 'Tráfego pago é um canal de aquisição. Marketing é a estratégia completa: marca, posicionamento, conteúdo e canais trabalhando juntos pelo crescimento.',
