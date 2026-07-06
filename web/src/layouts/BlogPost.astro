@@ -1,86 +1,267 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import FaqAccordion from '../components/content/FaqAccordion.astro';
+import ArticleCard from '../components/content/ArticleCard.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import Button from '../components/ui/Button.astro';
+import { articleSchema, graph } from '../lib/schema';
+import { pillarBySlug } from '../config/pillars';
+import { whatsappLink, NAP } from '../config/site';
 
-type Props = CollectionEntry<'blog'>['data'];
+interface Props {
+	id: string;
+	title: string;
+	description: string;
+	pubDate: Date;
+	updatedDate?: Date;
+	pillar?: string;
+	tags?: string[];
+	keyTakeaways?: string[];
+	faq?: { q: string; a: string }[];
+	relatedSlugs?: string[];
+	schemaType?: 'Article' | 'BlogPosting';
+}
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+	id,
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	pillar,
+	tags = [],
+	keyTakeaways,
+	faq,
+	relatedSlugs,
+	schemaType = 'BlogPosting',
+} = Astro.props;
+
+const url = `/blog/${id}/`;
+const pillarName = pillar ? pillarBySlug(pillar)?.name : undefined;
+const fmt = (d: Date) =>
+	new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }).format(d);
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Blog', url: '/blog' },
+	{ name: title, url },
+];
+
+const all = (await getCollection('blog')).filter((p) => !p.data.draft && p.id !== id);
+const related = (
+	relatedSlugs?.length
+		? relatedSlugs.map((s) => all.find((p) => p.id === s)).filter(Boolean)
+		: all.filter((p) => p.data.pillar === pillar)
+)
+	.filter((p): p is NonNullable<typeof p> => Boolean(p))
+	.slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+<BaseLayout
+	title={title}
+	description={description}
+	type="article"
+	publishedTime={pubDate}
+	modifiedTime={updatedDate}
+	class="bg-glow"
+>
+	<JsonLd
+		schema={graph(
+			articleSchema({
+				type: schemaType,
+				url,
+				title,
+				description,
+				datePublished: pubDate,
+				dateModified: updatedDate,
+			}),
+		)}
+	/>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+	<article class="mx-auto max-w-3xl px-6 pb-8 pt-14 sm:px-8 sm:pt-20">
+		<div class="mb-8">
+			<Breadcrumbs items={crumbs} />
+		</div>
+
+		{pillarName && (
+			<a
+				href={`/${pillar}`}
+				class="inline-flex w-fit rounded-full border border-roxo/30 bg-roxo/10 px-3 py-1 text-xs text-roxo-light transition-colors hover:border-roxo-light"
+			>
+				{pillarName}
+			</a>
+		)}
+
+		<h1 class="mt-5 text-4xl font-extrabold leading-[1.1] sm:text-5xl">{title}</h1>
+
+		<p class="mt-5 text-lg text-muted">{description}</p>
+
+		<div class="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+			<time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
+			{updatedDate && (
+				<>
+					<span aria-hidden="true" class="text-border">·</span>
+					<span>Atualizado em {fmt(updatedDate)}</span>
+				</>
+			)}
+		</div>
+
+		{keyTakeaways?.length && (
+			<aside class="mt-10 rounded-2xl border border-roxo/25 bg-roxo/5 p-6 sm:p-7">
+				<p class="text-sm font-semibold uppercase tracking-[0.12em] text-roxo-light">
+					Resumo rápido
+				</p>
+				<ul class="mt-4 grid gap-2.5">
+					{keyTakeaways.map((k) => (
+						<li class="flex items-start gap-3 text-sm text-text sm:text-base">
+							<svg
+								class="mt-1 shrink-0 text-roxo-light"
+								width="16" height="16" viewBox="0 0 24 24" fill="none"
+								stroke="currentColor" stroke-width="3" aria-hidden="true"
+							>
+								<path d="M20 6 9 17l-5-5" />
+							</svg>
+							<span>{k}</span>
+						</li>
+					))}
+				</ul>
+			</aside>
+		)}
+	</article>
+
+	<div class="post-prose mx-auto max-w-3xl px-6 pb-14 sm:px-8">
+		<slot />
+	</div>
+
+	{faq?.length && (
+		<section class="mx-auto max-w-3xl px-6 pb-14 sm:px-8">
+			<h2 class="mb-6 text-2xl font-bold">Perguntas frequentes</h2>
+			<FaqAccordion items={faq} />
+		</section>
+	)}
+
+	{tags.length > 0 && (
+		<section class="mx-auto max-w-3xl px-6 pb-8 sm:px-8">
+			<div class="flex flex-wrap gap-2">
+				{tags.map((t) => (
+					<span class="rounded-full border border-border bg-surface/40 px-3 py-1 text-xs text-muted">
+						#{t}
+					</span>
+				))}
+			</div>
+		</section>
+	)}
+
+	<section class="mx-auto max-w-3xl px-6 pb-16 sm:px-8">
+		<div class="bg-glow rounded-3xl border border-border p-8 text-center sm:p-10">
+			<h2 class="text-2xl font-bold sm:text-3xl">
+				<span class="text-metal">Quer aplicar isso</span>
+				<span class="text-roxo-light">na sua empresa?</span>
+			</h2>
+			<p class="mx-auto mt-4 max-w-lg text-muted">
+				Fale com um especialista da Matra e receba um diagnóstico gratuito. Atendemos {NAP.city} e todo o {NAP.regionName}.
+			</p>
+			<div class="mt-7 flex justify-center">
+				<Button href={whatsappLink('Olá! Li um conteúdo no blog da Matra e quero um diagnóstico gratuito.')} size="lg">
+					Solicitar diagnóstico gratuito
+				</Button>
+			</div>
+		</div>
+	</section>
+
+	{related.length > 0 && (
+		<section class="mx-auto max-w-6xl px-6 pb-24 sm:px-8">
+			<h2 class="mb-6 text-2xl font-bold">Continue lendo</h2>
+			<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				{related.map((p) => (
+					<ArticleCard
+						href={`/blog/${p.id}/`}
+						title={p.data.title}
+						description={p.data.description}
+						pubDate={p.data.pubDate}
+						pillar={p.data.pillar}
+					/>
+				))}
+			</div>
+		</section>
+	)}
+</BaseLayout>
+
+<style is:global>
+	.post-prose {
+		font-size: 1.0625rem;
+		line-height: 1.8;
+		color: var(--color-text);
+	}
+	.post-prose > * + * {
+		margin-top: 1.35em;
+	}
+	.post-prose h2 {
+		margin-top: 2.4em;
+		margin-bottom: 0.2em;
+		font-size: 1.6rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		scroll-margin-top: 6rem;
+	}
+	.post-prose h3 {
+		margin-top: 1.8em;
+		margin-bottom: 0.1em;
+		font-size: 1.25rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+	}
+	.post-prose p,
+	.post-prose ul,
+	.post-prose ol {
+		color: var(--color-muted);
+	}
+	.post-prose strong {
+		color: var(--color-text);
+		font-weight: 600;
+	}
+	.post-prose a {
+		color: var(--color-roxo-light);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		text-decoration-color: color-mix(in srgb, var(--color-roxo-light) 45%, transparent);
+	}
+	.post-prose a:hover {
+		text-decoration-color: var(--color-roxo-light);
+	}
+	.post-prose ul,
+	.post-prose ol {
+		padding-left: 1.4em;
+	}
+	.post-prose li + li {
+		margin-top: 0.5em;
+	}
+	.post-prose ul > li {
+		list-style: disc;
+	}
+	.post-prose ol > li {
+		list-style: decimal;
+	}
+	.post-prose li::marker {
+		color: var(--color-roxo-light);
+	}
+	.post-prose blockquote {
+		border-left: 3px solid var(--color-roxo);
+		padding-left: 1.2em;
+		font-style: italic;
+		color: var(--color-text);
+	}
+	.post-prose code {
+		border-radius: 0.375rem;
+		border: 1px solid var(--color-border);
+		background: var(--color-surface-2);
+		padding: 0.15em 0.4em;
+		font-size: 0.9em;
+	}
+	.post-prose h2 + p,
+	.post-prose h3 + p {
+		margin-top: 0.6em;
+	}
+</style>
