@@ -134,15 +134,21 @@ const steps = [
 			if (e.key === 'Escape' && !root.classList.contains('hidden')) close();
 		});
 
-		// Dispara ao rolar ~45% da página (uma vez por sessão)
+		// Dispara ao rolar ~45% da página (uma vez por sessão).
+		// scrollHeight cacheado fora do handler pra não forçar reflow a cada scroll.
+		let docH = document.documentElement.scrollHeight;
+		const onResize = () => {
+			docH = document.documentElement.scrollHeight;
+		};
 		const onScroll = () => {
-			const scrolled = window.scrollY + window.innerHeight;
-			if (scrolled > document.body.scrollHeight * 0.45) {
+			if (window.scrollY + window.innerHeight > docH * 0.45) {
 				open();
 				window.removeEventListener('scroll', onScroll);
+				window.removeEventListener('resize', onResize);
 			}
 		};
 		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onResize, { passive: true });
 	};
 	initQuiz();
 	document.addEventListener('astro:page-load', initQuiz);
