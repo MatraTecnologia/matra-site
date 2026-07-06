@@ -1,6 +1,6 @@
 ---
 title: 'Redes sociais para empresas: por onde começar'
-description: Guia para empresas começarem nas redes sociais com estratégia: escolher canais, definir conteúdo e transformar seguidores em clientes.
+description: 'Guia para empresas começarem nas redes sociais com estratégia: escolher canais, definir conteúdo e transformar seguidores em clientes.'
 pubDate: 2026-06-09
 pillar: redes-sociais
 tags: ['redes sociais', 'conteúdo', 'instagram']
