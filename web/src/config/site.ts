@@ -12,8 +12,8 @@ export const SITE = {
 } as const;
 
 export const CONTACT = {
-  whatsapp: '553484443047',
-  whatsappLabel: '+55 34 8444-3047',
+  whatsapp: '554384778544',
+  whatsappLabel: '+55 43 8477-8544',
   email: 'matratecnologia@gmail.com',
   instagram: 'https://instagram.com/matra.marketing',
 } as const;
