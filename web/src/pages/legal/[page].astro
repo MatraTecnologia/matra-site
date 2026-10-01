@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import LegalSection from '../../components/layout/LegalSection.astro';
+import { SITE, CONTACT, NAP } from '../../config/site';
+
+export const getStaticPaths = () => [
+	{ params: { page: 'exclusao-de-dados' } },
+];
+
+const crumbs = [
+	{ name: 'Início', url: '/' },
+	{ name: 'Exclusão de dados', url: '/legal/exclusao-de-dados' },
+];
+
+const CNPJ = '40.446.837/0001-83';
+const UPDATED_AT = '1 de outubro de 2026';
+const requestEmail = `mailto:${CONTACT.email}?subject=${encodeURIComponent('Exclusão de dados')}`;
+---
+
+<BaseLayout
+	title="Exclusão de dados"
+	description="Saiba como solicitar à Matra a exclusão dos seus dados pessoais, informar a aplicação utilizada e acompanhar o atendimento do pedido."
+>
+	<PageHeader crumbs={crumbs} width="md">
+		<Fragment slot="title">Exclusão de dados</Fragment>
+		<Fragment slot="lead">Última atualização: {UPDATED_AT}</Fragment>
+	</PageHeader>
+
+	<div class="mx-auto max-w-3xl space-y-10 px-6 pb-24 sm:px-8">
+		<LegalSection title="1. Como solicitar a exclusão" id="request">
+			<p>
+				Para solicitar a exclusão dos seus dados pessoais, entre em contato com a{' '}
+				<strong>{SITE.legalName}</strong> pelo e-mail{' '}
+				<a href={requestEmail} class="underline underline-offset-4">{CONTACT.email}</a>,
+				com o assunto «Exclusão de dados». Informe a aplicação, plataforma ou serviço ao qual
+				o pedido se refere, para que possamos localizar os registros e direcionar o atendimento.
+			</p>
+			<p>
+				Estas orientações se aplicam aos dados pessoais tratados nas aplicações e nos serviços
+				da Matra, inclusive na plataforma de atendimento via WhatsApp. O pedido é gratuito e
+				pode ser apresentado pelo titular dos dados ou por seu representante legal.
+			</p>
+		</LegalSection>
+
+		<LegalSection title="2. O que informar no contato" id="information">
+			<p>Inclua na mensagem as informações necessárias para identificar o pedido:</p>
+			<ul class="list-disc space-y-2 pl-5">
+				<li>seu nome e um e-mail para receber a resposta;</li>
+				<li>
+					<strong>o nome da aplicação, plataforma ou serviço</strong>{' '}em que seus dados foram
+					cadastrados ou utilizados e, se souber, o endereço de acesso;
+				</li>
+				<li>o e-mail ou número de telefone vinculado à conta, ao cadastro ou ao atendimento;</li>
+				<li>a empresa ou organização relacionada ao cadastro, quando houver;</li>
+				<li>
+					quais dados deseja excluir e se o pedido também envolve o encerramento de sua conta.
+				</li>
+			</ul>
+			<p>
+				Se não souber o nome da aplicação, descreva onde e como utilizou o serviço. Não é
+				necessário justificar o motivo do pedido.
+			</p>
+			<p>
+				Não envie senhas, códigos de autenticação, tokens, dados de cartão ou cópias de
+				documentos no primeiro contato. Se alguma comprovação adicional for necessária,
+				orientaremos você sobre as informações e o canal adequados.
+			</p>
+		</LegalSection>
+
+		<LegalSection title="3. Confirmação de identidade" id="identity">
+			<p>
+				Antes de excluir dados ou encerrar uma conta, podemos solicitar a confirmação de que
+				você é o titular, preferencialmente pelo e-mail ou telefone já associado ao cadastro.
+				Essa verificação evita que outra pessoa solicite a exclusão dos seus dados sem autorização.
+			</p>
+			<p>
+				Quando o pedido for feito por um representante, poderá ser necessário comprovar seus
+				poderes de representação. Solicitaremos apenas as informações necessárias para essa
+				verificação e para localizar os dados abrangidos pelo pedido.
+			</p>
+		</LegalSection>
+
+		<LegalSection title="4. Análise, resposta e acompanhamento" id="response">
+			<p>
+				Responderemos ao pedido em até quinze dias após o recebimento, conforme o prazo de
+				resposta informado em nossa{' '}
+				<a href="/legal/privacidade#exclusao" class="underline underline-offset-4">Política de Privacidade</a>.
+				A resposta indicará o andamento da solicitação, eventuais informações adicionais
+				necessárias ou o resultado da análise.
+			</p>
+			<p>
+				Esse é o prazo de resposta ao contato. A conclusão da exclusão depende da confirmação
+				de identidade, da identificação dos registros e das obrigações aplicáveis. Se não for
+				possível atender ao pedido de imediato, informaremos o motivo e a previsão de conclusão,
+				quando for possível defini-la.
+			</p>
+			<p>
+				Para acompanhar o pedido, responda à mesma conversa de e-mail. Ao concluir o atendimento,
+				informaremos as providências adotadas e, quando houver retenção de dados, sua justificativa.
+			</p>
+		</LegalSection>
+
+		<LegalSection title="5. Quais dados podem ser excluídos" id="scope">
+			<p>
+				Conforme a aplicação utilizada e o alcance do pedido, a exclusão pode abranger dados
+				de perfil e cadastro, informações de contato, arquivos enviados e registros de uso
+				associados a você. Na plataforma de atendimento via WhatsApp, também pode envolver
+				mensagens, mídias, anotações e informações complementares do atendimento.
+			</p>
+			<p>
+				Quando a Matra tratar dados em nome de uma empresa contratante, como ocorre com as
+				conversas entre essa empresa e seus clientes, ela será a controladora dos dados.
+				Encaminharemos o pedido à empresa responsável e atuaremos conforme suas instruções
+				e a legislação aplicável. Você também pode solicitar a exclusão diretamente a ela.
+			</p>
+		</LegalSection>
+
+		<LegalSection title="6. Dados que precisam ser conservados" id="retention">
+			<p>
+				A exclusão observa as hipóteses de conservação previstas na{' '}
+				<a
+					href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+					class="underline underline-offset-4"
+				>Lei Geral de Proteção de Dados Pessoais (LGPD)</a>, especialmente em seu artigo 16.
+				Podem ser mantidos os registros necessários ao cumprimento de obrigações legais ou
+				regulatórias. Havendo retenção, explicaremos quais dados precisam ser conservados,
+				por qual fundamento e o prazo ou critério de guarda aplicável.
+			</p>
+			<p>
+				Se houver cópias de segurança com os dados abrangidos pelo pedido, informaremos como
+				elas serão tratadas e o prazo ou critério aplicável à sua eliminação. A exclusão dos
+				sistemas em uso não significa necessariamente a remoção simultânea de todas as cópias.
+			</p>
+		</LegalSection>
+
+		<LegalSection title="7. Efeitos da exclusão e integrações" id="effects">
+			<p>
+				A exclusão de dados necessários ao funcionamento de uma conta pode impedir o acesso
+				à aplicação ou o uso de determinados recursos. Se o pedido envolver o encerramento
+				da conta, confirme isso na mensagem. Antes da exclusão, informe também se precisa
+				de acesso aos seus dados ou de uma cópia, para avaliarmos o atendimento desse pedido.
+			</p>
+			<p>
+				Excluir os dados na Matra não elimina automaticamente cópias mantidas nos dispositivos
+				dos participantes de uma conversa nem encerra contas em serviços de terceiros, como
+				WhatsApp ou Meta. Desconectar uma integração também não equivale a excluir os dados
+				já armazenados. Registros sob responsabilidade de terceiros devem ser tratados com
+				os respectivos responsáveis.
+			</p>
+		</LegalSection>
+
+		<LegalSection title="8. Outros direitos e esclarecimentos" id="rights">
+			<p>
+				Pelo mesmo canal, você pode solicitar acesso ou correção dos dados, informações sobre
+				seu tratamento e compartilhamento, revogar consentimento ou requerer anonimização
+				e bloqueio nas hipóteses previstas na LGPD. A análise considerará a natureza dos dados
+				e a base legal do tratamento.
+			</p>
+			<p>
+				Se discordar da resposta, entre em contato para pedir esclarecimentos ou revisão.
+				Você também pode apresentar uma petição à{' '}
+				<a href="https://www.gov.br/anpd/pt-br" class="underline underline-offset-4">ANPD</a>,
+				observando os requisitos aplicáveis.
+			</p>
+		</LegalSection>
+
+		<LegalSection title="9. Contato e documentos relacionados" id="contact">
+			<p>
+				{SITE.legalName} — CNPJ {CNPJ}<br />
+				E-mail para solicitar exclusão de dados:{' '}
+				<a href={requestEmail} class="break-words underline underline-offset-4">{CONTACT.email}</a><br />
+				{NAP.city}/{NAP.region}
+			</p>
+			<p>
+				Consulte também a{' '}
+				<a href="/legal/privacidade" class="underline underline-offset-4">Política de Privacidade</a>{' '}
+				e os{' '}
+				<a href="/legal/termos" class="underline underline-offset-4">Termos de Serviço</a>.
+				As regras específicas de cada aplicação e do contrato correspondente serão consideradas
+				na análise do pedido, respeitados os direitos previstos na legislação.
+			</p>
+		</LegalSection>
+	</div>
+</BaseLayout>
